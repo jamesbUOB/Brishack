@@ -75,9 +75,9 @@ class _MyAppState extends State<MyApp> {
               ElevatedButton(
                 onPressed: () {
                   // Send a test message to the server.
-                  socket.emit('client_message', 'Hello from Flutter!');
+                  socket.emit('message', 'start');
                 },
-                child: Text('Send Message'),
+                child: Text('Start simulation'),
               ),
             ],
           ),

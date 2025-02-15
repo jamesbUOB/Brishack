@@ -31,12 +31,9 @@ class GameView(arcade.Window):
         arcade.draw_sprite(self.animal_sprite)
     
     def on_close(self):
+        arcade.close_window()
         url = 'http://127.0.0.1:5000/end'
-        data = {"message": "test"}
-        response = requests.post(url, json=data)
-
-        # make call to API here
-        response = requests.post(url, json=data)
+        response = requests.post(url, json="window closed")
 
         super().on_close()
 

@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, Response
 from flask_socketio import SocketIO, emit
+import simulation
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -15,6 +16,7 @@ def send_data():
     data = request.get_json()
 
     socketio.emit('update', {'message': data})
+    
 
     return "200"
 
@@ -30,6 +32,15 @@ def handle_preflight():
 @socketio.on('connect')
 def handle_connect():
     print("Client connected")
+
+@socketio.on('message')
+def handle_message(message):
+    print(f"Received message: {message}")
+
+    if message == "start":
+        socketio.emit('update', {'message': "window opened"})
+        simulation.main()
+        
 
 
 if __name__ == '__main__':

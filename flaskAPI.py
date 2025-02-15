@@ -15,7 +15,7 @@ def get_data():
 def send_data():
     data = request.get_json()
 
-    socketio.emit('update', {'message': data})
+    socketio.emit('update', data)
     
 
     return "200"
@@ -38,7 +38,7 @@ def handle_message(message):
     print(f"Received message: {message}")
 
     if message == "start":
-        socketio.emit('update', {'message': "window opened"})
+        socketio.emit('update', "window opened")
         simulation.main()
         
 

@@ -60,9 +60,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Socket.IO Example',
+      title: 'Ecosystem simulation',
       home: Scaffold(
-        appBar: AppBar(title: Text('Socket.IO with Flask-SocketIO')),
+        appBar: AppBar(title: Text('Ecosystem Simulation')),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

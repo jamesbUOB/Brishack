@@ -2,8 +2,8 @@ import random
 from typing import Tuple
 import arcade
 from pytiled_parser import Color
-import plants
 import time
+import plants, humans
 
 INDICATOR_BAR_OFFSET = 32
 WINDOW_WIDTH = 800
@@ -21,11 +21,16 @@ class Animal(arcade.Sprite):
         
     def update(self):
         pass
+
+
+    def reproduce(self):
+        pass
         
 # fox
 class Fox(Animal):
-    def __init__(self, sprites, grid, plants, image_file, scale):
+    def __init__(self, sprites, grid, plant_list, image_file, scale):
         super().__init__(sprites, grid, image_file, scale)
+        self.type = "fox"
 
         self.last_spawn = time.time()
         self.health = 500
@@ -34,9 +39,29 @@ class Fox(Animal):
         self.health_bar = IndicatorBar(self, sprites, (0.0, 0.0), scale=(0.75,0.75), full_colour=arcade.color.RED)
         self.hunger_bar = IndicatorBar(self, sprites, (0.0, 0.0), full_colour=arcade.color.MEAT_BROWN, scale=(0.75, 0.75))
     
-        self.plants = plants
+        self.plant_list = plant_list
+        self.born = plants.time.time()
+        self.reproduce = False
+
+    def createNew(self):
+        fox = Fox(self.sprites, self.plant_list, "resources/fox.png", 0.2)
+        fox.center_x = self.center_x
+        fox.center_y = self.center_y
+        self.sprites.append(fox)  
+
+    def set_reproduce_false(self):
+        self.reproduce = False
+        self.color = arcade.color.WHITE
+
+    def set_reproduce_true(self):
+        self.reproduce = True
+        self.color = arcade.color.RED
 
     def update(self):
+        if self.hunger <= 0 and self.health > 0:
+            self.health -= 1
+        elif self.hunger > 0:
+            self.hunger -= 1
         if self.hunger <= 0:
             self.health -= DEATH_RATE
         else:
@@ -73,26 +98,42 @@ class Fox(Animal):
             self.change_y = random.choice([-1, 1]) * random.normalvariate(0.4, 0.1)
 
         # eat rats and berries
-        if self.hunger <= 700:
+        if self.reproduce == True:
+            animal_reproduce(self, self.sprites)
+        elif self.hunger <= 700:
             food = arcade.SpriteList()
-            # move toward rats or berries
+            # move toward rats or berries or trash
             for i in range(len(self.sprites)):
                 if type(self.sprites[i]) == Rat:
                     food.append(self.sprites[i]) 
+                elif type(self.sprites[i]) == arcade.SpriteSolidColor:
+                    pass
+                elif self.sprites[i].type == "waste":
+                    food.append(self.sprites[i])
 
-            for i in range(len(self.plants)):
-                if type(self.plants[i]) == plants.BerryBush:
-                    food.append(self.plants[i])
+
+            for i in range(len(self.plant_list)):
+                if type(self.plant_list[i]) == plants.BerryBush:
+                    food.append(self.plant_list[i])
                     
             if len(food) != 0:
                 closest_food = arcade.get_closest_sprite(self, food)
                 follow_sprite(self, closest_food[0])
-                sprite_collisions(self, closest_food[0], self.sprites, self.plants)
-                
+                sprite_collisions(self, closest_food[0], self.sprites, self.plant_list, "eat")
+        
+        
         if self.health <= 0:
-            self.hunger_bar.remove()
-            self.health_bar.remove()
-            self.kill()
+            self.kill_fox()
+
+        if random.random() < 0.0005:
+            self.set_reproduce_true()
+        
+
+        
+    def kill_fox(self):
+        self.hunger_bar.remove()
+        self.health_bar.remove()
+        self.kill()
 
 
 def follow_sprite(self, sprite):
@@ -113,14 +154,14 @@ def follow_sprite(self, sprite):
         self.center_x -= min(speed, self.center_x - sprite.center_x)
 
 
-def sprite_collisions(self, sprite, sprites, plant_list):
+def sprite_collisions(self, sprite, sprites, plant_list, type):
     collision = arcade.check_for_collision(self, sprite)
 
-    if collision:
-        if type(sprite) == Rat:
+    if collision and type == "eat":
+        if sprite.type == "rat":
             sprite.kill()
             self.hunger = 1000
-        elif type(sprite) == plants.BerryBush:
+        elif sprite.type == "berrybush":
             bush = plants.EmptyBush(sprites, "resources/emptybush.png", 2)
             bush.center_x = sprite.center_x
             bush.center_y = sprite.center_y
@@ -128,10 +169,46 @@ def sprite_collisions(self, sprite, sprites, plant_list):
             plant_list.append(bush)
             self.hunger += 500
             if self.hunger > 1000: self.hunger = 1000
+        elif sprite.type == "waste":
+            sprite.kill()
+            self.kill_fox()
+
+    if collision and type == "mate":
+        if self.type == sprite.type:
+            self.createNew()
+            self.set_reproduce_false()
+            sprite.set_reproduce_false()
+
+
+def fox_death(sprites):
+    for i in range(len(sprites)):
+        if type(sprites[i]) == Fox:
+            currentTime = plants.time.time()
+            elapsed = currentTime - sprites[i].born
+
+            if elapsed > 45:
+                # kill the fox
+                sprites[i].texture = arcade.load_texture("resources/foxold.png")
+                if sprites[i].health > 0: sprites[i].health -= 1
+
+
+def animal_reproduce(sprite, sprites):
+    # find closest animal of same type
+    animals = arcade.SpriteList()
+    for i in range(len(sprites)):
+        if (type(sprite) == type(sprites[i])) and sprite != sprites[i]:
+            animals.append(sprites[i])
+    
+    if len(animals) > 0:
+        closest_animal = arcade.get_closest_sprite(sprite, animals)
+        follow_sprite(sprite, closest_animal[0])
+        sprite_collisions(sprite, closest_animal[0], sprites, sprites, "mate") 
+
 
 class Rat(Animal):
-    def __init__(self, sprites, grid, image_file, scale=0.2):
-        super().__init__(sprites, grid, image_file, scale)
+    def __init__(self, sprites, image_file, scale=0.2):
+        super().__init__(sprites, image_file, scale)
+        self.type = "rat"
         self.start = (int(time.time()) % 60)
         self.last = self.start
         self.grid = grid
@@ -153,7 +230,7 @@ class Rat(Animal):
         if random.random() < 0.01:  # 1% chance per update
             self.change_x = random.choice([-1, 1]) * random.normalvariate(0.4, 0.1)
             self.change_y = random.choice([-1, 1]) * random.normalvariate(0.4, 0.1)
-
+            
         now = (int(time.time()) % 60)
         # spawns 2 rats every 5 seconds
         if ((now - self.last) > 5):

@@ -40,7 +40,9 @@ class _HomePageState extends State<HomePage> {
               child: Center( 
                 child: Padding(
                   padding: EdgeInsets.all(20),
-                child: Text(
+                  child: SizedBox(
+                    width: double.infinity,
+                      child: Text(
                   'Introuction paragraph',
                   style: TextStyle(
                     fontSize: 30,
@@ -49,8 +51,23 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-            )),
-            
+            ),
+            ),
+            ),
+             SliverToBoxAdapter(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                height: 600,
+              ),
+             ),
+             SliverToBoxAdapter(
+              child: SizedBox(
+                height: 20, // Add space between the container and the button
+              ),
+            ),
          SliverToBoxAdapter(
               child: Center(
                 child: Padding(
@@ -59,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 40, vertical: 15),
-                        backgroundColor: Colors.green,
+                        backgroundColor: const Color.fromARGB(255, 15, 114, 18),
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                     ),

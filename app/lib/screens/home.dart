@@ -72,13 +72,15 @@ class _HomePageState extends State<HomePage> {
                 child: Padding(
                   padding: EdgeInsets.only(top: 10), // Adjust the padding as needed
                   child: Text(
-                    "Your Bristol, Your Future",
+                    "What will you discover?",
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 25,
                       fontWeight: FontWeight.normal,
                       color: Colors.black,
                 ),
             ),),),),
+             const SliverToBoxAdapter(
+              child: SizedBox(height: 20),),
          SliverToBoxAdapter(
               child: Center(
                 child: Padding(
@@ -102,13 +104,14 @@ class _HomePageState extends State<HomePage> {
                       'Begin Your Exploration!',
                       style: TextStyle(fontSize: 18, color: Colors.white),
                            ),
+               ),
                   ),
                 ),
-              ),
+              ),],
             ),
-          ],
+          
         ),
-      ),
-    );
+      );
+    
   }
 }

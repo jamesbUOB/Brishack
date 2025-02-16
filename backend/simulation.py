@@ -1,18 +1,17 @@
 import random
 import arcade
 import requests
-import animals
+import animals, humans
 import time
-
-
 import arcade.draw
 from perlin import world_generation
+
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 800
 TILE_SIZE = 10
 WINDOW_TITLE = "Ecosystem Simulation"
 MOVEMENT_SPEED = 0.2
-import os
+waste_mode = True
 
 
 class Mist:
@@ -51,32 +50,19 @@ class GameView(arcade.Window):
 
 
         for i in range(4):
-            fox = animals.Fox(self.sprites, self.grid, self.plants, "resources/fox.png", scale=0.2)
-            fox.center_x = random.uniform(10, 790)
-            fox.center_y = random.uniform(10, 790)
-            self.sprites.append(fox)     
-
-            rat = animals.Rat(self.sprites, self.grid, "resources/rat.png", scale=1)
-            rat.center_x = random.uniform(10, 790)
-            rat.center_y = random.uniform(10, 790)
-            self.sprites.append(rat)
+            animals.spawn_fox(self.sprites, self.plants, self.grid)   
+            animals.spawn_rat(self.sprites, self.grid)
 
 
-        for i in range(8):
-            bush = animals.plants.BerryBush(self.plants, "resources/berrybush.png", scale=2)
-            bush.center_x = random.uniform(10, 790)
-            bush.center_y = random.uniform(10, 790)
-            self.plants.append(bush)
+        for i in range(10):
+            animals.plants.spawn_bush(self.plants, self.grid)
 
 
 
         # add waste to the map
         if waste_mode == True:
             for i in range(10):
-                waste = humans.Waste(self.sprites, "resources/garbage.png", scale=2.5)
-                waste.center_x = random.uniform(10, 790)
-                waste.center_y = random.uniform(10, 790)
-                self.sprites.append(waste)
+                humans.spawn_waste(self.sprites, self.grid)
 
 
         self.change_x = MOVEMENT_SPEED
@@ -95,6 +81,8 @@ class GameView(arcade.Window):
         return texture 
     
     def setup(self):
+
+        self.start = time.time()
                     
         self.ax = int(WINDOW_WIDTH / TILE_SIZE)
         self.ay = int(WINDOW_HEIGHT / TILE_SIZE)
@@ -133,21 +121,6 @@ class GameView(arcade.Window):
         self.terrain_list.draw(pixelated = True)
         self.sprites.draw()
         self.plants.draw()
-    
-
-   # def spawn_rat(self):
-   #     # print(time.time())
-   #     current_time = (int(time.time()) % 60)
-   #     # if current_time - last_time >= 5:
-   #     # current_time = time.time()
-   #     if current_time % 10 == 0:
-   #         rat = animals.Rat(self.sprites, "resources/rat.png", scale=1)
-   #         rat.center_x = random.uniform(10, 790)
-   #         rat.center_y = random.uniform(10, 790)
-   #         self.sprites.append(rat)
-
-
-   #         # self.last_spawn_time = current_time
 
     
     def on_update(self, delta_time):
@@ -164,7 +137,19 @@ class GameView(arcade.Window):
 
         animals.fox_death(self.sprites)
 
-        # self.spawn_rat()
+        if (time.time() - self.start) > 4:
+            # spawn rats
+            if waste_mode:
+                if (time.time() - self.start) > 8:
+                # spawn one trash and one rat
+                    humans.spawn_waste(self.sprites, self.grid)
+                    animals.spawn_rat(self.sprites, self.grid)
+                    self.start = time.time()
+            else:
+                animals.spawn_rat(self.sprites, self.grid)
+                animals.spawn_rat(self.sprites, self.grid)
+                self.start = time.time()
+        
 
 
     

@@ -34,7 +34,6 @@ class Fox(Animal):
         super().__init__(sprites, grid, image_file, scale)
         self.type = "fox"
 
-        self.last_spawn = time.time()
         self.health = 500
         self.hunger = 1000
         # indicator bars
@@ -70,6 +69,11 @@ class Fox(Animal):
             self.hunger -= DEATH_RATE
 
         
+        if self.health < 0:
+            self.health = 0
+        if self.hunger < 0:
+            self.hunger = 0
+
         self.health_bar.fullness = self.health/500.0
         self.hunger_bar.fullness = self.hunger/1000.0
 
@@ -102,7 +106,7 @@ class Fox(Animal):
         # eat rats and berries
         if self.reproduce == True:
             animal_reproduce(self, self.sprites)
-        elif self.hunger <= 700:
+        elif self.hunger <= 800:
             food = arcade.SpriteList()
             # move toward rats or berries or trash
             for i in range(len(self.sprites)):
@@ -127,7 +131,7 @@ class Fox(Animal):
         if self.health <= 0:
             self.kill_fox()
 
-        if random.random() < 0.0005:
+        if random.random() < 0.0006:
             self.set_reproduce_true()
         
 
@@ -140,8 +144,9 @@ class Fox(Animal):
 
 def follow_sprite(self, sprite):
     speed = MOVEMENT_SPEED
-    if self.hunger <= 0:
+    if self.hunger <= 200:
         speed = MOVEMENT_SPEED * 2
+    if self.reproduce == True: speed = MOVEMENT_SPEED * 2
 
     if self.center_y < sprite.center_y:
         self.center_y += min(speed, sprite.center_y - self.center_y)
@@ -235,30 +240,30 @@ class Rat(Animal):
             self.change_x = random.choice([-1, 1]) * random.normalvariate(0.4, 0.1)
             self.change_y = random.choice([-1, 1]) * random.normalvariate(0.4, 0.1)
             
-        now = (int(time.time()) % 60)
-        # spawns 2 rats every 15 seconds
-        if ((now - self.last) > 15):
-            self.spawn_rat()
-            self.last = now
 
 
-    def spawn_rat(self):
-        # print(time.time())
-        # current_time = (int(time.time()) % 60)
-        # if current_time - last_time >= 5:
-        # current_time = time.time()
-        # if current_time % 10 == 0:
-        rat = Rat(self.sprites, self.grid,"resources/rat.png", scale=1)
+def spawn_rat(sprites, grid):
+    rat = Rat(sprites, grid,"resources/rat.png", scale=1)
+    rat.center_x = random.uniform(10, 790)
+    rat.center_y = random.uniform(10, 790)
+
+    while grid[int(rat.center_y//10)][int(rat.center_x//10)] < -0.15:
         rat.center_x = random.uniform(10, 790)
         rat.center_y = random.uniform(10, 790)
 
-        while self.grid[int(rat.center_y//10)][int(rat.center_x//10)] < -0.15:
-            rat.center_x = random.uniform(10, 790)
-            rat.center_y = random.uniform(10, 790)
+    sprites.append(rat)
 
-        self.sprites.append(rat)
 
-        # self.last_spawn_time = current_time
+def spawn_fox(sprites, plant_list, grid):
+    fox = Fox(sprites, grid, plant_list, "resources/fox.png", scale=0.2)
+    fox.center_x = random.uniform(10, 790)
+    fox.center_y = random.uniform(10 ,790)
+
+    while grid[int(fox.center_y//10)][int(fox.center_x//10)] < -0.15:
+        fox.center_x = random.uniform(10, 790)
+        fox.center_y = random.uniform(10, 790)
+    
+    sprites.append(fox)
 
 
 class IndicatorBar:

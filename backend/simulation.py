@@ -15,20 +15,29 @@ waste_mode = True
 
 
 class Mist(arcade.Sprite):
-    def __init__(self, x, y, screen_width, screen_height, opacity=100):
-        texture = arcade.Texture.create_empty("mist", (screen_width, screen_height))
+    def __init__(self, x, y, width, height, screen_width, screen_height, opacity=120):
+        texture = arcade.Texture.create_empty("mist", (width, height))
         super().__init__(texture)
         
         self.center_x = x
         self.center_y = y
-        self.width = screen_width
-        self.height = screen_height
-        self.color = arcade.color.WHITE
+        self.width = width
+        self.height = height
+        self.screen_width = screen_width
+        self.screen_height = screen_height
+        self.color = arcade.color.GRAY
         self.alpha = opacity  
         self.angle = 90  
+        self.speed = 1.5
 
     def update(self):
-        pass
+        self.center_x += self.speed
+        
+        if self.center_x > self.screen_width + self.width:
+            self.center_x = - (self.width/2) - 100 
+        
+        elif self.center_x < - (self.width):
+            self.center_x = self.screen_width + (self.width/2) + 100
 
     def draw(self):
         arcade.draw_ellipse_filled(
@@ -37,7 +46,6 @@ class Mist(arcade.Sprite):
             (self.color[0], self.color[1], self.color[2], self.alpha),
             self.angle
         )
-
 
 class GameView(arcade.Window):
     def __init__(self):
@@ -75,7 +83,7 @@ class GameView(arcade.Window):
         self.change_x = MOVEMENT_SPEED
         self.change_y = MOVEMENT_SPEED
 
-        self.mist = Mist(400,400,200,400)
+        self.mist = Mist(0,400,400,600,WINDOW_WIDTH,WINDOW_HEIGHT)
     
     def find_texture(self, cell):
         if cell < -0.15:
@@ -143,8 +151,10 @@ class GameView(arcade.Window):
             
         hit_list = arcade.check_for_collision_with_list(self.mist,self.foxs)
         for f in hit_list:
-                f.health -= 2 
+                f.health -= 0.5
                 f.health_bar.update_colors(new_full_colour=arcade.color.GREEN)
+        
+        self.mist.update()
 
         animals.plants.update_bushes(self.plants)
 

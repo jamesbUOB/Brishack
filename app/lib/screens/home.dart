@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
                   child: SizedBox(
                     width: double.infinity,
                       child: Text(
-                  'Introuction paragraph',
+                  'Introduction paragraph',
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.normal,
@@ -55,12 +55,14 @@ class _HomePageState extends State<HomePage> {
             ),
             ),
              SliverToBoxAdapter(
+              child: SizedBox(
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 height: 600,
+              ),
               ),
              ),
              SliverToBoxAdapter(

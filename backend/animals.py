@@ -25,8 +25,8 @@ class Fox(Animal):
     def __init__(self, sprites, image_file, scale=0.2):
         super().__init__(sprites, image_file, scale)
 
-        self.health = 100
-        self.hunger = 500
+        self.health = 500
+        self.hunger = 1000
         # indicator bars
         self.health_bar = IndicatorBar(self, sprites, (0.0, 0.0), scale=(0.75,0.75), full_colour=arcade.color.RED)
         self.hunger_bar = IndicatorBar(self, sprites, (0.0, 0.0), full_colour=arcade.color.MEAT_BROWN, scale=(0.75, 0.75))
@@ -38,8 +38,8 @@ class Fox(Animal):
             self.hunger -= 1
 
         
-        self.health_bar.fullness = self.health/100.0
-        self.hunger_bar.fullness = self.hunger/500.0
+        self.health_bar.fullness = self.health/500.0
+        self.hunger_bar.fullness = self.hunger/1000.0
 
         self.hunger_bar.position = (
         self.center_x,
@@ -70,7 +70,7 @@ class Fox(Animal):
 
 
         # eat rats
-        if self.hunger <= 300:
+        if self.hunger <= 500:
             rats = arcade.SpriteList()
             # move toward rats
             for i in range(len(self.sprites)):

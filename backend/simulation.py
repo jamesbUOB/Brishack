@@ -2,7 +2,7 @@ import random
 import arcade
 import requests
 import time
-import animals
+import animals, plants
 
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 800
@@ -29,6 +29,11 @@ class GameView(arcade.Window):
             rat.center_x = random.uniform(10, 390)
             rat.center_y = random.uniform(10, 390)
             self.sprites.append(rat)
+
+            bush = plants.EmptyBush(self.sprites, "resources/emptybush.png", scale=0.2)
+            bush.center_x = random.uniform(10, 390)
+            bush.center_y = random.uniform(10, 390)
+            self.sprites.append(bush)
 
         self.change_x = MOVEMENT_SPEED
         self.change_y = MOVEMENT_SPEED

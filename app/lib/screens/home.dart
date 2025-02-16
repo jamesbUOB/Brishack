@@ -71,8 +71,8 @@ class _HomePageState extends State<HomePage> {
   ),
   child: AnimatedTextKit(
     animatedTexts: [
-      WavyAnimatedText('Your Bristol'),
-      WavyAnimatedText('Your Future'),
+      WavyAnimatedText('Your Bristol Your Future'),
+      //WavyAnimatedText('Your Future'),
     ],
     isRepeatingAnimation: true,
     /**onTap: () {

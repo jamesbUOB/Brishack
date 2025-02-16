@@ -103,8 +103,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   // Create a Socket.IO client instance.
   final SocketService socketService = SocketService();
-  String connectionStatus = 'Disconnected';
-  String message = '';
 
   @override
   void initState() {

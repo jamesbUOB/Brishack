@@ -1,19 +1,36 @@
 import random
 import arcade
 import requests
+import animals
 import time
-import animals, humans
+
+
 import arcade.draw
 from perlin import world_generation
-
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 800
 TILE_SIZE = 10
 WINDOW_TITLE = "Ecosystem Simulation"
 MOVEMENT_SPEED = 0.2
+import os
 
-waste_mode = True
 
+class Mist:
+
+
+   def __init__(self,x,y,screen_width, screen_height, opacity=100):
+
+
+       self.x = x
+       self.y = y
+       self.screen_width = screen_width
+       self.screen_height = screen_height
+       self.opacity = opacity
+  
+   def mist_texture(self):
+        texture = arcade.load_texture("tiles/smoke.png")
+       
+        arcade.draw_rect_filled(arcade.rect.XYWH(self.x, self.y, self.screen_width, self.screen_height),color)
 
 
 class GameView(arcade.Window):
@@ -87,24 +104,25 @@ class GameView(arcade.Window):
 
 
         for row in range(self.ay):
-            for col in range(self.ax):
-                texture = self.find_texture(self.grid[row][col])
+           for col in range(self.ax):
+               texture = self.find_texture(self.grid[row][col])
 
-                original_width = texture.width 
-                original_height = texture.height 
+               original_width = texture.width
+               original_height = texture.height
 
-                scale_x = TILE_SIZE / original_width
-                scale_y = TILE_SIZE / original_height
+               scale_x = TILE_SIZE / original_width
+               scale_y = TILE_SIZE / original_height
 
-                scale = min(scale_x, scale_y)
+               scale = min(scale_x, scale_y)
 
-                tile = arcade.BasicSprite(texture, scale=scale)
-                tile = arcade.BasicSprite(texture, scale=scale)
+               tile = arcade.BasicSprite(texture, scale=scale)
+               tile = arcade.BasicSprite(texture, scale=scale)
 
-                tile.center_x = col * TILE_SIZE + TILE_SIZE / 2
-                tile.center_y = row * TILE_SIZE + TILE_SIZE / 2
+               tile.center_x = col * TILE_SIZE + TILE_SIZE / 2
+               tile.center_y = row * TILE_SIZE + TILE_SIZE / 2
 
-                self.terrain_list.append(tile)
+               self.terrain_list.append(tile)
+
 
     def on_draw(self):
         # screen
@@ -117,18 +135,19 @@ class GameView(arcade.Window):
         self.plants.draw()
     
 
-    def spawn_rat(self):
-        # print(time.time())
-        current_time = (int(time.time()) % 60)
-        # if current_time - last_time >= 5:
-        # current_time = time.time()
-        if current_time % 10 == 0:
-            rat = animals.Rat(self.sprites, "resources/rat.png", scale=1)
-            rat.center_x = random.uniform(10, 790)
-            rat.center_y = random.uniform(10, 790)
-            self.sprites.append(rat)
+   # def spawn_rat(self):
+   #     # print(time.time())
+   #     current_time = (int(time.time()) % 60)
+   #     # if current_time - last_time >= 5:
+   #     # current_time = time.time()
+   #     if current_time % 10 == 0:
+   #         rat = animals.Rat(self.sprites, "resources/rat.png", scale=1)
+   #         rat.center_x = random.uniform(10, 790)
+   #         rat.center_y = random.uniform(10, 790)
+   #         self.sprites.append(rat)
 
-            # self.last_spawn_time = current_time
+
+   #         # self.last_spawn_time = current_time
 
     
     def on_update(self, delta_time):
@@ -155,15 +174,17 @@ class GameView(arcade.Window):
         arcade.close_window()
         super().on_close()
 
+
 def main(parameters):
-    # parameters can determine some starting conditions for the simulation
+   # parameters can determine some starting conditions for the simulation
 
-    window = GameView()
-    window.setup()
-    arcade.run()
 
-    # simulation could pause after a certain amount of time
+   window = GameView()
+   window.setup()
+   arcade.run()
 
+
+   # simulation could pause after a certain amount of time
 
 if __name__ == "__main__":
-    main("default")
+   main("default")

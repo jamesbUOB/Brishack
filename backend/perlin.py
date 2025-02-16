@@ -1,13 +1,12 @@
 import noise
 import random
 
-seeds = [42,43,45]
 scale = 100
 octaves = 5
 persistence = 0.5
 lacunarity = 2.0
 lake_scale = 25  
-seed = random.choice(seeds)
+seed = random.randint(41,43)
 target_water_coverage = 0.1  
 
 def world_generation(width, height, world):

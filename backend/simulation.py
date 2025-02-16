@@ -34,147 +34,106 @@ class Mist:
 
 
 class GameView(arcade.Window):
-   def __init__(self):
-       super().__init__(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE,
-                        resizable=True)
-      
-       self.ax = int(WINDOW_WIDTH / TILE_SIZE)
-       self.ay = int(WINDOW_HEIGHT/ TILE_SIZE)
+    def __init__(self):
+        super().__init__(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, 
+                         resizable=True)
+        
+        self.ax = int(WINDOW_WIDTH / TILE_SIZE)
+        self.ay = int(WINDOW_HEIGHT/ TILE_SIZE)
+
+        self.grid = [[0 for _ in range(self.ax)] for _ in range(self.ay)]
+        self.grid = world_generation(self.ax, self.ay, self.grid)
+
+        # list of all sprites
+        self.sprites = arcade.SpriteList()
+        self.plants = arcade.SpriteList()
+        self.world_tiles = None
 
 
-       relative_path = 'terrain.png'
+        for i in range(4):
+            fox = animals.Fox(self.sprites, self.grid, self.plants, "resources/fox.png", scale=0.2)
+            fox.center_x = random.uniform(10, 790)
+            fox.center_y = random.uniform(10, 790)
+            self.sprites.append(fox)     
+
+            rat = animals.Rat(self.sprites, self.grid, "resources/rat.png", scale=1)
+            rat.center_x = random.uniform(10, 790)
+            rat.center_y = random.uniform(10, 790)
+            self.sprites.append(rat)
 
 
-
-
-       self.background_color = arcade.csscolor.LIGHT_GREEN
-      
-       self.background = None
-
-
-       self.grid = [[0 for _ in range(self.ax)] for _ in range(self.ay)]
-       self.grid = world_generation(self.ax, self.ay, self.grid)
-
-
-       # list of all sprites
-       self.sprites = arcade.SpriteList()
-       self.plants = arcade.SpriteList()
-       self.world_tiles = None
-
-
-
-
-       for i in range(2):
-           fox = animals.Fox(self.sprites, self.grid, self.plants, "resources/fox.png", scale=0.2)
-           fox.center_x = random.uniform(10, 790)
-           fox.center_y = random.uniform(10, 790)
-
-
-           while self.grid[int(fox.center_y//10)][int(fox.center_x//10)] < -0.15:
-               fox.center_x = random.uniform(10, 790)
-               fox.center_y = random.uniform(10, 790)
-
-
-           self.sprites.append(fox)    
-
-
-           rat = animals.Rat(self.sprites, self.grid,"resources/rat.png", scale=1)
-           rat.center_x = random.uniform(10, 790)
-           rat.center_y = random.uniform(10, 790)
-
-
-           while self.grid[int(rat.center_y//10)][int(rat.center_x//10)] < -0.15:
-               rat.center_x = random.uniform(10, 790)
-               rat.center_y = random.uniform(10, 790)
-
-
-           self.sprites.append(rat)
+        for i in range(8):
+            bush = animals.plants.BerryBush(self.plants, "resources/berrybush.png", scale=2)
+            bush.center_x = random.uniform(10, 790)
+            bush.center_y = random.uniform(10, 790)
+            self.plants.append(bush)
 
 
 
-
-       for i in range(8):
-           bush = animals.plants.BerryBush(self.plants,"resources/berrybush.png", scale=2)
-           bush.center_x = random.uniform(10, 790)
-           bush.center_y = random.uniform(10, 790)
-
-
-           while self.grid[int(bush.center_y//10)][int(bush.center_x//10)] < -0.15:
-               bush.center_x = random.uniform(10, 790)
-               bush.center_y = random.uniform(10, 790)
-           self.plants.append(bush)
+        # add waste to the map
+        if waste_mode == True:
+            for i in range(10):
+                waste = humans.Waste(self.sprites, "resources/garbage.png", scale=2.5)
+                waste.center_x = random.uniform(10, 790)
+                waste.center_y = random.uniform(10, 790)
+                self.sprites.append(waste)
 
 
-       #self.mist = Mist(400,400,200,200)
+        self.change_x = MOVEMENT_SPEED
+        self.change_y = MOVEMENT_SPEED
+    
+    def find_texture(self, cell):
+        if cell < -0.15:
+                texture = arcade.load_texture("tiles/blue.png")
+        elif cell < -0.10:
+                texture = arcade.load_texture("tiles/sand.png")
+        elif cell < 0.04:
+                texture = arcade.load_texture("tiles/lightgreen.png")
+        else:
+                texture = arcade.load_texture("tiles/darkgreen.png")
+        
+        return texture 
+    
+    def setup(self):
+                    
+        self.ax = int(WINDOW_WIDTH / TILE_SIZE)
+        self.ay = int(WINDOW_HEIGHT / TILE_SIZE)
+        # sets up and restarts game when called
+        self.change_x = MOVEMENT_SPEED
+        self.terrain_list = arcade.SpriteList()
 
 
-       self.change_x = MOVEMENT_SPEED
-       self.change_y = MOVEMENT_SPEED
-  
-   def find_texture(self, cell):
-       if cell < -0.15:
-               texture = arcade.load_texture("tiles/blue.png")
-       elif cell < -0.10:
-               texture = arcade.load_texture("tiles/sand.png")
-       elif cell < 0.04:
-               texture = arcade.load_texture("tiles/lightgreen.png")
-       else:
-               texture = arcade.load_texture("tiles/darkgreen.png")
-      
-       return texture
-  
-   def setup(self):
-      
-       self.background = arcade.load_texture("terrain.png")
-          
-       self.ax = int(WINDOW_WIDTH / TILE_SIZE)
-       self.ay = int(WINDOW_HEIGHT / TILE_SIZE)
-       # sets up and restarts game when called
-       self.change_x = MOVEMENT_SPEED
-       self.terrain_list = arcade.SpriteList()
-
-
-       for row in range(self.ay):
+        for row in range(self.ay):
            for col in range(self.ax):
                texture = self.find_texture(self.grid[row][col])
-
 
                original_width = texture.width
                original_height = texture.height
 
-
                scale_x = TILE_SIZE / original_width
                scale_y = TILE_SIZE / original_height
 
-
                scale = min(scale_x, scale_y)
 
-
                tile = arcade.BasicSprite(texture, scale=scale)
                tile = arcade.BasicSprite(texture, scale=scale)
-
 
                tile.center_x = col * TILE_SIZE + TILE_SIZE / 2
                tile.center_y = row * TILE_SIZE + TILE_SIZE / 2
 
-
                self.terrain_list.append(tile)
 
 
-   def on_draw(self):
-       # screen
-       # clear should be called at the start
+    def on_draw(self):
+        # screen
+        # clear should be called at the start
 
 
-
-
-       self.clear()
-       self.terrain_list.draw(pixelated = True)
-       self.sprites.draw()
-       self.plants.draw()
-       #self.mist.draw()
-  
-
+        self.clear()
+        self.terrain_list.draw(pixelated = True)
+        self.sprites.draw()
+        self.plants.draw()
+    
 
    # def spawn_rat(self):
    #     # print(time.time())
@@ -190,30 +149,30 @@ class GameView(arcade.Window):
 
    #         # self.last_spawn_time = current_time
 
+    
+    def on_update(self, delta_time):
 
-  
-   def on_update(self, delta_time):
+        num = len(self.sprites)
+        for i in range(num):
+            # checking again because the update function is called
+            num = len(self.sprites)
+            if i < num:
+                if type(self.sprites[i]) == animals.Fox or type(self.sprites[i] == animals.Rat):
+                    self.sprites[i].update()
+
+        animals.plants.update_bushes(self.plants)
+
+        animals.fox_death(self.sprites)
+
+        # self.spawn_rat()
 
 
-       num = len(self.sprites)
-       for i in range(num):
-           # checking again because the update function is called
-           num = len(self.sprites)
-           if i < num:
-               if type(self.sprites[i]) == animals.Fox or type(self.sprites[i] == animals.Rat):
-                   self.sprites[i].update()
-
-
-       animals.plants.update_bushes(self.plants)
-       # self.spawn_rat()
-
-
-  
-   def on_close(self):
-       url = 'http://127.0.0.1:5000/end'
-       response = requests.post(url, json="window closed")
-       arcade.close_window()
-       super().on_close()
+    
+    def on_close(self):
+        url = 'http://127.0.0.1:5000/end'
+        response = requests.post(url, json="window closed")
+        arcade.close_window()
+        super().on_close()
 
 
 def main(parameters):

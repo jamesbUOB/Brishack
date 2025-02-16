@@ -15,10 +15,10 @@ MOVEMENT_SPEED = 0.2
 fox_numbers = []
 food_available = []
 waste_mode = False
+road_mode = False
 
 
 class Mist:
-
 
    def __init__(self,x,y,screen_width, screen_height, opacity=100):
 
@@ -33,6 +33,16 @@ class Mist:
         texture = arcade.load_texture("tiles/smoke.png")
        
         arcade.draw_rect_filled(arcade.rect.XYWH(self.x, self.y, self.screen_width, self.screen_height),color)
+
+def on_close(self):
+        data = {"fox_numbers": fox_numbers,
+                "food_numbers": food_available}
+
+
+        url = 'http://127.0.0.1:5000/end'
+        response = requests.post(url, json=data)
+        arcade.close_window()
+        super().on_close()
 
 
 class GameView(arcade.Window):
@@ -51,19 +61,21 @@ class GameView(arcade.Window):
         self.plants = arcade.SpriteList()
         self.urban = arcade.SpriteList()
         self.world_tiles = None
+        self.road_coords = [-100, -100]
 
-        road_y = 0
-        road_centre = random.uniform(100,700) 
-        for x in range(15):
-            rd = humans.Road("resources/road.png", self.sprites)
-            rd.center_y = road_y
-            rd.center_x = road_centre
-            self.urban.append(rd)
-            road_y += 76
+        if road_mode:
+            road_y = 0
+            road_centre = random.uniform(100,700) 
+            for x in range(15):
+                rd = humans.Road("resources/road.png", self.sprites)
+                rd.center_y = road_y
+                rd.center_x = road_centre
+                self.urban.append(rd)
+                road_y += 76
 
-        self.road_start_x = road_centre - rd.width/2 - 20
-        self.road_start_y = road_centre + rd.width/2 + 20
-        self.road_coords = [self.road_start_x, self.road_start_y]
+            self.road_start_x = road_centre - rd.width/2 - 20
+            self.road_start_y = road_centre + rd.width/2 + 20
+            self.road_coords = [self.road_start_x, self.road_start_y]
 
         for i in range(4):
             animals.spawn_fox(self.sprites, self.plants, self.grid, self.road_coords)   
@@ -99,6 +111,7 @@ class GameView(arcade.Window):
     def setup(self):
 
         self.start = time.time()
+        self.fullsimstart = time.time()
                     
         self.ax = int(WINDOW_WIDTH / TILE_SIZE)
         self.ay = int(WINDOW_HEIGHT / TILE_SIZE)
@@ -187,17 +200,9 @@ class GameView(arcade.Window):
         fox_numbers.append(fox_num)
         food_available.append(food_num)
 
+        if time.time() - self.fullsimstart >= 60:
+            on_close(self)
 
-    
-    def on_close(self):
-        data = {"fox_numbers": fox_numbers,
-                "food_numbers": food_available}
-
-
-        url = 'http://127.0.0.1:5000/end'
-        response = requests.post(url, json=data)
-        arcade.close_window()
-        super().on_close()
 
 
 def main(parameters):

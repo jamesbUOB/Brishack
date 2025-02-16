@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'introduction.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -38,7 +39,7 @@ class _HomePageState extends State<HomePage> {
               width: 500,
               height: 500,
             ),
-            Text(
+            /**Text(
               'Your Bristol Your Future', // Your text
               style: TextStyle(
                 fontSize: 70,
@@ -53,8 +54,32 @@ class _HomePageState extends State<HomePage> {
               ),
                 ],
               ),
-            ),
-          ],
+            ),**/
+          DefaultTextStyle(
+  style: TextStyle(
+    fontSize: 70,
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+                color: const Color.fromARGB(255, 31, 61, 42),
+                 shadows: [
+                  Shadow(
+                offset: Offset(3, 3),
+                blurRadius: 5,
+                color: Colors.black.withOpacity(0.5),
+              ),
+                ],
+  ),
+  child: AnimatedTextKit(
+    animatedTexts: [
+      WavyAnimatedText('Your Bristol'),
+      WavyAnimatedText('Your Future'),
+    ],
+    isRepeatingAnimation: true,
+    /**onTap: () {
+      print("Tap Event");
+    },**/
+  ),)
+        ],
         ),
       ),
     ),

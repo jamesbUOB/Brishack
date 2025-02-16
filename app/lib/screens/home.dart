@@ -1,7 +1,12 @@
-import 'package:flutter/material.dart'
-import 'package:flutter_animate/flutter_animate.dart'
+import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
     @override
     Widget build(BuildContext context) {
         return Scaffold(
@@ -21,6 +26,8 @@ class HomePage extends StatefulWidget {
         ),
         ),
         // Display Homepage Content
+        /**Container(
+            padding: const EdgeInsets.all(20),
         child: Column(
             children: [
                 const Text(
@@ -33,10 +40,10 @@ class HomePage extends StatefulWidget {
                     onPressed: null, // default for now
                     style: bac
                 )*/
-          ],
+          ],z
 
             
-        ))
+        )**/);
 
     }
 }

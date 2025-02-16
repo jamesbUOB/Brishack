@@ -19,10 +19,7 @@ road_mode = False
 
 
 class Mist:
-
    def __init__(self,x,y,screen_width, screen_height, opacity=100):
-
-
        self.x = x
        self.y = y
        self.screen_width = screen_width
@@ -31,10 +28,9 @@ class Mist:
   
    def mist_texture(self):
         texture = arcade.load_texture("tiles/smoke.png")
-       
         arcade.draw_rect_filled(arcade.rect.XYWH(self.x, self.y, self.screen_width, self.screen_height),color)
 
-def on_close(self):
+def on_close():
         data = {"fox_numbers": fox_numbers,
                 "food_numbers": food_available}
 
@@ -86,12 +82,10 @@ class GameView(arcade.Window):
             animals.plants.spawn_bush(self.plants, self.grid)
 
 
-
         # add waste to the map
         if waste_mode == True:
             for i in range(10):
                 humans.spawn_waste(self.sprites, self.grid)
-
 
         self.change_x = MOVEMENT_SPEED
         self.change_y = MOVEMENT_SPEED
@@ -105,11 +99,10 @@ class GameView(arcade.Window):
                 texture = arcade.load_texture("tiles/lightgreen.png")
         else:
                 texture = arcade.load_texture("tiles/darkgreen.png")
-        
         return texture 
     
-    def setup(self):
 
+    def setup(self):
         self.start = time.time()
         self.fullsimstart = time.time()
                     
@@ -144,8 +137,6 @@ class GameView(arcade.Window):
     def on_draw(self):
         # screen
         # clear should be called at the start
-
-
         self.clear()
         self.terrain_list.draw(pixelated = True)
         self.plants.draw()
@@ -164,7 +155,6 @@ class GameView(arcade.Window):
                     self.sprites[i].update()
 
         animals.plants.update_bushes(self.plants)
-
         animals.fox_death(self.sprites)
 
         if (time.time() - self.start) > 4:
@@ -201,20 +191,13 @@ class GameView(arcade.Window):
         food_available.append(food_num)
 
         if time.time() - self.fullsimstart >= 60:
-            on_close(self)
-
+            on_close()
 
 
 def main(parameters):
-   # parameters can determine some starting conditions for the simulation
-
-
    window = GameView()
    window.setup()
    arcade.run()
-
-
-   # simulation could pause after a certain amount of time
 
 if __name__ == "__main__":
    main("default")

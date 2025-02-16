@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-
 class CustomisePage extends StatefulWidget {
   const CustomisePage({super.key});
 
@@ -132,7 +131,7 @@ class _CustomisePageState extends State<CustomisePage> {
                         Navigator.pop(context);
                       },
                       icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      label: const Text('Back to Home', style: TextStyle(color: Colors.white)),
+                      label: const Text('Back', style: TextStyle(color: Colors.white)),
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 13, 87, 15)),
                       ),

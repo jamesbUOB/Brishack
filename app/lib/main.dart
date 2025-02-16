@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/**import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 void main() {
@@ -85,5 +85,39 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
+}**/
+
+import 'package:flutter/material.dart';
+import 'services/socket_service.dart';
+import 'screens/home.dart';
+
+void main() {
+  runApp(MyApp());
 }
 
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  // Create a Socket.IO client instance.
+  final SocketService socketService = SocketService();
+  String connectionStatus = 'Disconnected';
+  String message = '';
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize your socket connection here
+    socketService.connect();
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: HomePage(),
+    );
+  }
+}

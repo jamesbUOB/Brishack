@@ -55,10 +55,8 @@ class _CustomisePageState extends State<CustomisePage> {
 
   @override
   Widget build(BuildContext context) {
-    const List<String> choices = <String>[
-      'Low',
-      'Medium',
-      'High',
+    List<bool> choices = <bool>[
+      false,false,false 
     ];
     return Scaffold(
        body: Container(
@@ -86,6 +84,18 @@ class _CustomisePageState extends State<CustomisePage> {
           borderRadius: BorderRadius.circular(20),
         ),
         padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [ 
+          const Text(
+          "Land Pollution",
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+        ),
+        Switch(value: choices[0], onChanged:(bool value) {
+        setState(() {
+        choices[0] = value; // Update the state when toggled
+        });
+        },)
+        ],),
         ),),),
           SliverToBoxAdapter(
     child: Padding(
@@ -97,6 +107,18 @@ class _CustomisePageState extends State<CustomisePage> {
           borderRadius: BorderRadius.circular(20),
         ),
         padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [ 
+          const Text(
+          "Air Pollution",
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+        ),
+        Switch(value: choices[1], onChanged:(bool value) {
+        setState(() {
+        choices[1] = value; // Update the state when toggled
+        });
+        },)
+        ],),
         ),),),
           SliverToBoxAdapter(
     child: Padding(
@@ -108,6 +130,18 @@ class _CustomisePageState extends State<CustomisePage> {
           borderRadius: BorderRadius.circular(20),
         ),
         padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [ 
+          const Text(
+          "Urbanisation",
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+        ),
+        Switch(value: choices[2], onChanged:(bool value) {
+        setState(() {
+        choices[2] = value; // Update the state when toggled
+        });
+        },)
+        ],),
         ),),),
           SliverToBoxAdapter(
     child: Padding(

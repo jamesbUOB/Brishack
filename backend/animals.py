@@ -268,7 +268,6 @@ def spawn_fox(sprites, plant_list, grid):
 
 class IndicatorBar:
 
-
    def __init__(
        self,
        owner: Animal,

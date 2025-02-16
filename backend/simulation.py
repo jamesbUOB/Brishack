@@ -1,4 +1,5 @@
 import random
+import json
 import arcade
 import requests
 import animals, humans
@@ -11,6 +12,8 @@ WINDOW_HEIGHT = 800
 TILE_SIZE = 10
 WINDOW_TITLE = "Ecosystem Simulation"
 MOVEMENT_SPEED = 0.2
+fox_numbers = []
+food_available = []
 waste_mode = True
 
 
@@ -151,11 +154,34 @@ class GameView(arcade.Window):
                 self.start = time.time()
         
 
+        # counting numbers to graph
+        fox_num = 0
+        food_num = 0
+
+        for i in range(len(self.sprites)):
+            if type(self.sprites[i]) == arcade.SpriteSolidColor:
+                pass
+            elif self.sprites[i].type == "fox":
+                fox_num += 1
+            elif self.sprites[i].type == "rat":
+                food_num += 1
+
+        for i in range(len(self.plants)):
+            if self.plants[i].type == "berrybush":
+                food_num += 1
+
+        fox_numbers.append(fox_num)
+        food_available.append(food_num)
+
 
     
     def on_close(self):
+        data = {"fox_numbers": fox_numbers,
+                "food_numbers": food_available}
+
+
         url = 'http://127.0.0.1:5000/end'
-        response = requests.post(url, json="window closed")
+        response = requests.post(url, json=data)
         arcade.close_window()
         super().on_close()
 

@@ -51,10 +51,35 @@ class _HomePageState extends State<HomePage> {
               ),
             )),
             
-
-                  ],
+         SliverToBoxAdapter(
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: 30),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 40, vertical: 15),
+                        backgroundColor: Colors.green,
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                    ),
+                    ),
+                onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Introduction()),
+                      );
+                    },
+                    child: const Text(
+                      'Start Exploring',
+                      style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
               ),
+                ),
+              ),),
+          ],
+        ),
+      ),
     );
   }
 }

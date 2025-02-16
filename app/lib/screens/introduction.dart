@@ -21,7 +21,7 @@ class _IntroductionState extends State<Introduction> {
               MaterialPageRoute(builder: (context) => HomePage()),
             );
           },
-          child: Text('Go to Home Screen'),
+          child: Text('Back to Home Screen'),
         ),
       ),
     );

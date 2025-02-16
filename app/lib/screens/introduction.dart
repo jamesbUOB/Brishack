@@ -83,34 +83,51 @@ class _IntroductionState extends State<Introduction> {
                 ),
               ),
             ),
-            SliverToBoxAdapter(child: Padding(
+              const SliverToBoxAdapter(
+              child: SizedBox(
+                height: 50, // Add space between the container and the button
+              ),
+            ),
+    const SliverToBoxAdapter(child: SizedBox(height: 50)), // Add space between the image and the container
+             SliverToBoxAdapter(
+              child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  padding: EdgeInsets.all(20),
-                  height: 100,))),
-                  SliverToBoxAdapter(child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  padding: EdgeInsets.all(20),))),
-                  SliverToBoxAdapter(child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  padding: EdgeInsets.all(20),)))
-          ],
+                  padding: const EdgeInsets.all(20),
+                  height: 100,
+            //       decoration: BoxDecoration(
+            //         color: Colors.white,
+            //         borderRadius: BorderRadius.circular(20),
+            //       ),
+            //       padding: EdgeInsets.all(20),
+            //       height: 100,))),
+            //       SliverToBoxAdapter(child: Padding(
+            //     padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            //     child: Container(
+            //       decoration: BoxDecoration(
+            //         color: Colors.white,
+            //         borderRadius: BorderRadius.circular(20),
+            //       ),
+            //       padding: EdgeInsets.all(20),))),
+            //       SliverToBoxAdapter(child: Padding(
+            //     padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            //     child: Container(
+            //       decoration: BoxDecoration(
+            //         color: Colors.white,
+            //         borderRadius: BorderRadius.circular(20),
+            //       ),
+            //       padding: EdgeInsets.all(20),)))
+          // ],
         ),
-      ),
+              ),
+             ),
+          ],
+      ),)
+    
     );
   }
 }

@@ -44,7 +44,7 @@ class Fox(Animal):
         self.reproduce = False
 
     def createNew(self):
-        fox = Fox(self.sprites, self.plant_list, "resources/fox.png", 0.2)
+        fox = Fox(self.sprites, self.grid, self.plant_list, "resources/fox.png", 0.2)
         fox.center_x = self.center_x
         fox.center_y = self.center_y
         self.sprites.append(fox)  
@@ -170,8 +170,10 @@ def sprite_collisions(self, sprite, sprites, plant_list, type):
             self.hunger += 500
             if self.hunger > 1000: self.hunger = 1000
         elif sprite.type == "waste":
+            self.health -= 250
+            if self.health <= 0:
+                self.kill_fox()
             sprite.kill()
-            self.kill_fox()
 
     if collision and type == "mate":
         if self.type == sprite.type:
@@ -232,8 +234,8 @@ class Rat(Animal):
             self.change_y = random.choice([-1, 1]) * random.normalvariate(0.4, 0.1)
             
         now = (int(time.time()) % 60)
-        # spawns 2 rats every 5 seconds
-        if ((now - self.last) > 5):
+        # spawns 2 rats every 15 seconds
+        if ((now - self.last) > 15):
             self.spawn_rat()
             self.last = now
 

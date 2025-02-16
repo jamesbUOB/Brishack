@@ -24,13 +24,8 @@ class GameView(arcade.Window):
         self.ax = int(WINDOW_WIDTH / TILE_SIZE)
         self.ay = int(WINDOW_HEIGHT/ TILE_SIZE)
 
-        relative_path = 'terrain.png'
-
-
-        self.background_color = arcade.csscolor.LIGHT_GREEN
-        self.background = None
         self.grid = [[0 for _ in range(self.ax)] for _ in range(self.ay)]
-
+        self.grid = world_generation(self.ax, self.ay, self.grid)
 
         # list of all sprites
         self.sprites = arcade.SpriteList()
@@ -38,7 +33,7 @@ class GameView(arcade.Window):
         self.world_tiles = None
 
 
-        for i in range(3):
+        for i in range(4):
             fox = animals.Fox(self.sprites, self.grid, self.plants, "resources/fox.png", scale=0.2)
             fox.center_x = random.uniform(10, 790)
             fox.center_y = random.uniform(10, 790)
@@ -70,25 +65,46 @@ class GameView(arcade.Window):
         self.change_x = MOVEMENT_SPEED
         self.change_y = MOVEMENT_SPEED
     
-    def color_assignment(self, cell):
-        if cell < -0.15:  
-            return (80, 120, 160)   # Brighter deep water
+    def find_texture(self, cell):
+        if cell < -0.15:
+                texture = arcade.load_texture("tiles/blue.png")
         elif cell < -0.10:
-            return (180, 150, 120)  # Brighter light brown (mud)
+                texture = arcade.load_texture("tiles/sand.png")
         elif cell < 0.04:
-            return (70, 170, 70)    # Brighter dark green
+                texture = arcade.load_texture("tiles/lightgreen.png")
         else:
-            return (130, 210, 130)  # Brighter light green
+                texture = arcade.load_texture("tiles/darkgreen.png")
+        
+        return texture 
     
     def setup(self):
-        
-        self.background = arcade.load_texture("terrain.png")
-            
+                    
         self.ax = int(WINDOW_WIDTH / TILE_SIZE)
         self.ay = int(WINDOW_HEIGHT / TILE_SIZE)
-        self.grid = world_generation(self.ax, self.ay, self.grid)
         # sets up and restarts game when called
         self.change_x = MOVEMENT_SPEED
+        self.terrain_list = arcade.SpriteList()
+
+
+        for row in range(self.ay):
+            for col in range(self.ax):
+                texture = self.find_texture(self.grid[row][col])
+
+                original_width = texture.width 
+                original_height = texture.height 
+
+                scale_x = TILE_SIZE / original_width
+                scale_y = TILE_SIZE / original_height
+
+                scale = min(scale_x, scale_y)
+
+                tile = arcade.BasicSprite(texture, scale=scale)
+                tile = arcade.BasicSprite(texture, scale=scale)
+
+                tile.center_x = col * TILE_SIZE + TILE_SIZE / 2
+                tile.center_y = row * TILE_SIZE + TILE_SIZE / 2
+
+                self.terrain_list.append(tile)
 
     def on_draw(self):
         # screen
@@ -96,26 +112,23 @@ class GameView(arcade.Window):
 
 
         self.clear()
-        arcade.draw_texture_rect(
-            self.background,
-            arcade.LBWH(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT),
-        )
+        self.terrain_list.draw(pixelated = True)
         self.sprites.draw()
         self.plants.draw()
     
 
-    # def spawn_rat(self):
-    #     # print(time.time())
-    #     current_time = (int(time.time()) % 60)
-    #     # if current_time - last_time >= 5:
-    #     # current_time = time.time()
-    #     if current_time % 10 == 0:
-    #         rat = animals.Rat(self.sprites, "resources/rat.png", scale=1)
-    #         rat.center_x = random.uniform(10, 790)
-    #         rat.center_y = random.uniform(10, 790)
-    #         self.sprites.append(rat)
+    def spawn_rat(self):
+        # print(time.time())
+        current_time = (int(time.time()) % 60)
+        # if current_time - last_time >= 5:
+        # current_time = time.time()
+        if current_time % 10 == 0:
+            rat = animals.Rat(self.sprites, "resources/rat.png", scale=1)
+            rat.center_x = random.uniform(10, 790)
+            rat.center_y = random.uniform(10, 790)
+            self.sprites.append(rat)
 
-    #         # self.last_spawn_time = current_time
+            # self.last_spawn_time = current_time
 
     
     def on_update(self, delta_time):

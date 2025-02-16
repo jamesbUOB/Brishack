@@ -39,11 +39,11 @@ class _HomePageState extends State<HomePage> {
             const SliverToBoxAdapter(
               child: Center( 
                 child: Padding(
-                  padding: EdgeInsets.all(20),
-                  child: SizedBox(
-                    width: double.infinity,
+                  padding: EdgeInsets.only(top:20),
+                  
+              
                       child: Text(
-                  'Introduction paragraph',
+                  "Your Bristol, Your Future",
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.normal,
@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             ),
-            ),
+            
              SliverToBoxAdapter(
               child: SizedBox(
               child: Container(
@@ -92,10 +92,11 @@ class _HomePageState extends State<HomePage> {
                     child: const Text(
                       'Start Exploring',
                       style: TextStyle(fontSize: 18, color: Colors.white),
+                           ),
+                  ),
                 ),
               ),
-                ),
-              ),),
+            ),
           ],
         ),
       ),

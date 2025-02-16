@@ -161,6 +161,7 @@ class _IntroductionState extends State<Introduction> {
                   onPressed: () {
                     socket.emit('message', 'start');
                   },
+
                   child: const Text('Start simulation'),
                 ),
               ),
@@ -168,8 +169,9 @@ class _IntroductionState extends State<Introduction> {
 
         
         ),
-      ),
-    );
+              ),
+             );
+          
   }
 
   Widget factItem(String title, String description) {

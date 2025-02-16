@@ -1,7 +1,6 @@
 import random
 import arcade
 import requests
-import time
 import animals
 
 import arcade.draw
@@ -33,18 +32,28 @@ class GameView(arcade.Window):
 
         # list of all sprites
         self.sprites = arcade.SpriteList()
+        self.plants = arcade.SpriteList()
         self.world_tiles = None
 
+
         for i in range(2):
-            fox = animals.Fox(self.sprites, "resources/fox.png", scale=0.2)
-            fox.center_x = random.uniform(10, 390)
-            fox.center_y = random.uniform(10, 390)
+            fox = animals.Fox(self.sprites, self.plants, "resources/fox.png", scale=0.2)
+            fox.center_x = random.uniform(10, 790)
+            fox.center_y = random.uniform(10, 790)
             self.sprites.append(fox)     
 
             rat = animals.Rat(self.sprites, "resources/rat.png", scale=1)
-            rat.center_x = random.uniform(10, 390)
-            rat.center_y = random.uniform(10, 390)
+            rat.center_x = random.uniform(10, 790)
+            rat.center_y = random.uniform(10, 790)
             self.sprites.append(rat)
+
+
+        for i in range(8):
+            bush = animals.plants.BerryBush(self.plants, "resources/berrybush.png", scale=2)
+            bush.center_x = random.uniform(10, 790)
+            bush.center_y = random.uniform(10, 790)
+            self.plants.append(bush)
+
 
         self.change_x = MOVEMENT_SPEED
         self.change_y = MOVEMENT_SPEED
@@ -75,6 +84,8 @@ class GameView(arcade.Window):
 
 
         self.clear()
+        self.sprites.draw()
+        self.plants.draw()
 
         arcade.draw_texture_rect(
             self.background,
@@ -92,6 +103,8 @@ class GameView(arcade.Window):
             if i < num:
                 if type(self.sprites[i]) == animals.Fox or type(self.sprites[i] == animals.Rat):
                     self.sprites[i].update()
+
+        animals.plants.update_bushes(self.plants)
 
     
     def on_close(self):

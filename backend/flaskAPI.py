@@ -33,13 +33,17 @@ def handle_preflight():
 def handle_connect():
     print("Client connected")
 
-@socketio.on('message')
-def handle_message(message):
-    print(f"Received message: {message}")
+@socketio.on('start')
+def handle_message(start):
+    print(f"Received message: {start}")
 
-    if message == "start":
-        socketio.emit('update', "window opened")
-        simulation.main()
+    socketio.emit('update', "window opened")
+    # flutter passes in parameters for starting condition
+
+
+    simulation.main(start)
+
+        
         
 
 

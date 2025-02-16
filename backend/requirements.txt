@@ -1,0 +1,4 @@
+flask==3.0.3
+arcade==3.0
+flask_socketio=5.5.1
+

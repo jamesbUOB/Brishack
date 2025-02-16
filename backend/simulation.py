@@ -39,12 +39,12 @@ class GameView(arcade.Window):
 
 
         for i in range(3):
-            fox = animals.Fox(self.sprites, self.plants, "resources/fox.png", scale=0.2)
+            fox = animals.Fox(self.sprites, self.grid, self.plants, "resources/fox.png", scale=0.2)
             fox.center_x = random.uniform(10, 790)
             fox.center_y = random.uniform(10, 790)
             self.sprites.append(fox)     
 
-            rat = animals.Rat(self.sprites, "resources/rat.png", scale=1)
+            rat = animals.Rat(self.sprites, self.grid, "resources/rat.png", scale=1)
             rat.center_x = random.uniform(10, 790)
             rat.center_y = random.uniform(10, 790)
             self.sprites.append(rat)

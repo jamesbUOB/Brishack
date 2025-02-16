@@ -206,8 +206,8 @@ def animal_reproduce(sprite, sprites):
 
 
 class Rat(Animal):
-    def __init__(self, sprites, image_file, scale=0.2):
-        super().__init__(sprites, image_file, scale)
+    def __init__(self, sprites, grid, image_file, scale=0.2):
+        super().__init__(sprites, grid, image_file, scale)
         self.type = "rat"
         self.start = (int(time.time()) % 60)
         self.last = self.start

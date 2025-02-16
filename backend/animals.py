@@ -13,20 +13,19 @@ DEATH_RATE = 1
 
 class Animal(arcade.Sprite):
 
-    def __init__(self, sprites, image_file, scale):
+    def __init__(self, sprites, grid, image_file, scale):
         super().__init__(image_file, scale)
 
         self.sprites = sprites
+        self.grid = grid 
         
     def update(self):
         pass
         
-
-
 # fox
 class Fox(Animal):
-    def __init__(self, sprites, plants, image_file, scale):
-        super().__init__(sprites, image_file, scale)
+    def __init__(self, sprites, grid, plants, image_file, scale):
+        super().__init__(sprites, grid, image_file, scale)
 
         self.last_spawn = time.time()
         self.health = 500
@@ -56,7 +55,6 @@ class Fox(Animal):
             self.center_y + (1.5*INDICATOR_BAR_OFFSET)
         )
 
-
         # Move the sprite
         self.center_x += self.change_x
         self.center_y += self.change_y
@@ -73,7 +71,6 @@ class Fox(Animal):
         if random.random() < 0.01:  # 1% chance per update
             self.change_x = random.choice([-1, 1]) * random.normalvariate(0.4, 0.1)
             self.change_y = random.choice([-1, 1]) * random.normalvariate(0.4, 0.1)
-
 
         # eat rats and berries
         if self.hunger <= 700:
@@ -92,12 +89,10 @@ class Fox(Animal):
                 follow_sprite(self, closest_food[0])
                 sprite_collisions(self, closest_food[0], self.sprites, self.plants)
                 
-        
         if self.health <= 0:
             self.hunger_bar.remove()
             self.health_bar.remove()
             self.kill()
-
 
 
 def follow_sprite(self, sprite):
@@ -134,14 +129,12 @@ def sprite_collisions(self, sprite, sprites, plant_list):
             self.hunger += 500
             if self.hunger > 1000: self.hunger = 1000
 
-
-
-
 class Rat(Animal):
-    def __init__(self, sprites, image_file, scale=0.2):
-        super().__init__(sprites, image_file, scale)
+    def __init__(self, sprites, grid, image_file, scale=0.2):
+        super().__init__(sprites, grid, image_file, scale)
         self.start = (int(time.time()) % 60)
         self.last = self.start
+        self.grid = grid
     
     def update(self):
         # Move the sprite
@@ -174,18 +167,17 @@ class Rat(Animal):
         # if current_time - last_time >= 5:
         # current_time = time.time()
         # if current_time % 10 == 0:
-        rat = Rat(self.sprites, "resources/rat.png", scale=1)
+        rat = Rat(self.sprites, self.grid,"resources/rat.png", scale=1)
         rat.center_x = random.uniform(10, 790)
         rat.center_y = random.uniform(10, 790)
+
+        while self.grid[int(rat.center_y//10)][int(rat.center_x//10)] < -0.15:
+            rat.center_x = random.uniform(10, 790)
+            rat.center_y = random.uniform(10, 790)
+
         self.sprites.append(rat)
 
         # self.last_spawn_time = current_time
-
-
-
-
-
-            
 
 
 class IndicatorBar:

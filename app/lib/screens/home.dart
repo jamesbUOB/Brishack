@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
   ),
   child: AnimatedTextKit(
     animatedTexts: [
-      WavyAnimatedText('Your Bristol Your Future'),
+      WavyAnimatedText('Your Bristol, Your Future!'),
       //WavyAnimatedText('Your Future'),
     ],
     isRepeatingAnimation: true,
@@ -170,8 +170,8 @@ class _HomePageState extends State<HomePage> {
                             Align(
                               alignment: Alignment.center,
                               child: Text(
-                              "• How foxes and rats survive in Bristol’s urban landscape\n"
-                              "• The impact of pollution, food availability, and climate shifts\n"
+                              "• How foxes and rats adapt to Bristol’s urban landscape 🏙️\n"
+                              "• The impact of pollution, urbanisation, and climate shifts\n"
                               "• The delicate balance between wildlife, urban expansion, and biodiversity.\n",
                               textAlign:  TextAlign.center,
                               style: TextStyle(
@@ -259,7 +259,7 @@ class _HomePageState extends State<HomePage> {
                       );
                     },
                     child: const Text(
-                      'Explore!',
+                      '🌿Explore',
                       style: TextStyle(fontSize: 25, color: Colors.white),
                     ),
                   ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'introduction.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -40,8 +40,11 @@ class _HomePageState extends State<HomePage> {
               ElevatedButton(
                 onPressed: () {
                   // Add your onPressed code here!
+                  Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) =>  Introduction()),
+                  );
                 },
-                child: const Text("Explore Bristol's EcoSystem"),
+                child: const Text("Explore Birstol's EcoSystem"),
 
             
         ),

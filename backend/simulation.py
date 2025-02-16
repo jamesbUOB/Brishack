@@ -2,6 +2,7 @@ import random
 import arcade
 import requests
 import animals
+import time
 
 import arcade.draw
 from perlin import world_generation
@@ -22,6 +23,7 @@ class GameView(arcade.Window):
         self.ay = int(WINDOW_HEIGHT/ TILE_SIZE)
 
         relative_path = 'terrain.png'
+
 
         self.background_color = arcade.csscolor.LIGHT_GREEN
         
@@ -90,8 +92,21 @@ class GameView(arcade.Window):
         )
         self.sprites.draw()
         self.plants.draw()
-
     
+
+    # def spawn_rat(self):
+    #     # print(time.time())
+    #     current_time = (int(time.time()) % 60)
+    #     # if current_time - last_time >= 5:
+    #     # current_time = time.time()
+    #     if current_time % 10 == 0:
+    #         rat = animals.Rat(self.sprites, "resources/rat.png", scale=1)
+    #         rat.center_x = random.uniform(10, 790)
+    #         rat.center_y = random.uniform(10, 790)
+    #         self.sprites.append(rat)
+
+    #         # self.last_spawn_time = current_time
+
     
     def on_update(self, delta_time):
 
@@ -104,6 +119,7 @@ class GameView(arcade.Window):
                     self.sprites[i].update()
 
         animals.plants.update_bushes(self.plants)
+        # self.spawn_rat()
 
     
     def on_close(self):

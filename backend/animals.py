@@ -3,11 +3,13 @@ from typing import Tuple
 import arcade
 from pytiled_parser import Color
 import plants
+import time
 
 INDICATOR_BAR_OFFSET = 32
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 800
 MOVEMENT_SPEED = 0.5
+DEATH_RATE = 1
 
 class Animal(arcade.Sprite):
 
@@ -26,6 +28,7 @@ class Fox(Animal):
     def __init__(self, sprites, plants, image_file, scale):
         super().__init__(sprites, image_file, scale)
 
+        self.last_spawn = time.time()
         self.health = 500
         self.hunger = 1000
         # indicator bars
@@ -36,9 +39,9 @@ class Fox(Animal):
 
     def update(self):
         if self.hunger <= 0:
-            self.health -= 1
+            self.health -= DEATH_RATE
         else:
-            self.hunger -= 1
+            self.hunger -= DEATH_RATE
 
         
         self.health_bar.fullness = self.health/500.0
@@ -137,6 +140,8 @@ def sprite_collisions(self, sprite, sprites, plant_list):
 class Rat(Animal):
     def __init__(self, sprites, image_file, scale=0.2):
         super().__init__(sprites, image_file, scale)
+        self.start = (int(time.time()) % 60)
+        self.last = self.start
     
     def update(self):
         # Move the sprite
@@ -155,6 +160,26 @@ class Rat(Animal):
         if random.random() < 0.01:  # 1% chance per update
             self.change_x = random.choice([-1, 1]) * random.normalvariate(0.4, 0.1)
             self.change_y = random.choice([-1, 1]) * random.normalvariate(0.4, 0.1)
+
+        now = (int(time.time()) % 60)
+        # spawns 2 rats every 5 seconds
+        if ((now - self.last) > 5):
+            self.spawn_rat()
+            self.last = now
+
+
+    def spawn_rat(self):
+        # print(time.time())
+        # current_time = (int(time.time()) % 60)
+        # if current_time - last_time >= 5:
+        # current_time = time.time()
+        # if current_time % 10 == 0:
+        rat = Rat(self.sprites, "resources/rat.png", scale=1)
+        rat.center_x = random.uniform(10, 790)
+        rat.center_y = random.uniform(10, 790)
+        self.sprites.append(rat)
+
+        # self.last_spawn_time = current_time
 
 
 

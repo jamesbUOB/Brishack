@@ -36,7 +36,7 @@ class GameView(arcade.Window):
         self.world_tiles = None
 
 
-        for i in range(2):
+        for i in range(3):
             fox = animals.Fox(self.sprites, self.plants, "resources/fox.png", scale=0.2)
             fox.center_x = random.uniform(10, 790)
             fox.center_y = random.uniform(10, 790)
@@ -104,6 +104,7 @@ class GameView(arcade.Window):
                     self.sprites[i].update()
 
         animals.plants.update_bushes(self.plants)
+        animals.fox_death(self.sprites)
 
     
     def on_close(self):

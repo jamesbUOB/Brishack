@@ -11,11 +11,14 @@ class EmptyBush(Plant):
         super().__init__(sprites, image_file, scale)
 
         self.start = time.time()
+        self.type = "emptybush"
 
 
 class BerryBush(Plant):
     def __init__(self, sprites, image_file, scale):
         super().__init__(sprites, image_file, scale)
+
+        self.type = "berrybush"
 
         
     
@@ -32,6 +35,7 @@ def update_bushes(plants):
                 bush.center_y = plants[i].center_y
                 plants.append(bush)
                 plants[i].kill()
+                # length of loop changes
                 break
 
                 

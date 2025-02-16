@@ -73,7 +73,16 @@ class _IntroductionState extends State<Introduction> {
         ),
         child: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(
+            SliverToBoxAdapter(child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: EdgeInsets.all(20),
+                  height: 200,))),
+                  SliverToBoxAdapter(
               child: Center( // Wrap button in Center for better layout
                 child: ElevatedButton(
                   onPressed: () {
@@ -83,31 +92,6 @@ class _IntroductionState extends State<Introduction> {
                 ),
               ),
             ),
-            SliverToBoxAdapter(child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  padding: EdgeInsets.all(20),
-                  height: 100,))),
-                  SliverToBoxAdapter(child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  padding: EdgeInsets.all(20),))),
-                  SliverToBoxAdapter(child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  padding: EdgeInsets.all(20),)))
           ],
         ),
       ),

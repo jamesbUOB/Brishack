@@ -18,17 +18,39 @@ waste_mode = False
 road_mode = False
 
 
-class Mist:
-   def __init__(self,x,y,screen_width, screen_height, opacity=100):
-       self.x = x
-       self.y = y
-       self.screen_width = screen_width
-       self.screen_height = screen_height
-       self.opacity = opacity
-  
-   def mist_texture(self):
-        texture = arcade.load_texture("tiles/smoke.png")
-        arcade.draw_rect_filled(arcade.rect.XYWH(self.x, self.y, self.screen_width, self.screen_height),color)
+class Mist(arcade.Sprite):
+    def __init__(self, x, y, width, height, screen_width, screen_height, opacity=120):
+        texture = arcade.Texture.create_empty("mist", (width, height))
+        super().__init__(texture)
+        
+        self.center_x = x
+        self.center_y = y
+        self.width = width
+        self.height = height
+        self.screen_width = screen_width
+        self.screen_height = screen_height
+        self.color = arcade.color.GRAY
+        self.alpha = opacity  
+        self.angle = 90  
+        self.speed = 1.5
+
+    def update(self):
+        self.center_x += self.speed
+        
+        if self.center_x > self.screen_width + self.width:
+            self.center_x = - (self.width/2) - 100 
+        
+        elif self.center_x < - (self.width):
+            self.center_x = self.screen_width + (self.width/2) + 100
+
+    def draw(self):
+        arcade.draw_ellipse_filled(
+            self.center_x, self.center_y,
+            self.width, self.height,
+            (self.color[0], self.color[1], self.color[2], self.alpha),
+            self.angle
+        )
+
 
 def on_close():
         data = {"fox_numbers": fox_numbers,
@@ -89,6 +111,8 @@ class GameView(arcade.Window):
 
         self.change_x = MOVEMENT_SPEED
         self.change_y = MOVEMENT_SPEED
+
+        self.mist = Mist(0,400,400,600,WINDOW_WIDTH,WINDOW_HEIGHT)
     
     def find_texture(self, cell):
         if cell < -0.15:
@@ -133,26 +157,34 @@ class GameView(arcade.Window):
 
                self.terrain_list.append(tile)
 
-
     def on_draw(self):
         # screen
         # clear should be called at the start
+
         self.clear()
         self.terrain_list.draw(pixelated = True)
         self.plants.draw()
         self.urban.draw()
         self.sprites.draw()
+        self.mist.draw()
 
     
     def on_update(self, delta_time):
+        self.foxs = arcade.SpriteList()
 
-        num = len(self.sprites)
-        for i in range(num):
-            # checking again because the update function is called
-            num = len(self.sprites)
-            if i < num:
-                if type(self.sprites[i]) == animals.Fox or type(self.sprites[i] == animals.Rat):
-                    self.sprites[i].update()
+        for sprite in self.sprites:
+            if isinstance(sprite, (animals.Fox, animals.Rat)):
+                sprite.update()
+                
+                if isinstance(sprite, animals.Fox):
+                    self.foxs.append(sprite)
+            
+        hit_list = arcade.check_for_collision_with_list(self.mist,self.foxs)
+        for f in hit_list:
+                f.health -= 0.5
+                f.health_bar.update_colors(new_full_colour=arcade.color.GREEN)
+        
+        self.mist.update()
 
         animals.plants.update_bushes(self.plants)
         animals.fox_death(self.sprites)
@@ -169,7 +201,6 @@ class GameView(arcade.Window):
                 animals.spawn_rat(self.sprites, self.grid, self.road_coords)
                 animals.spawn_rat(self.sprites, self.grid, self.road_coords)
                 self.start = time.time()
-        
 
         # counting numbers to graph
         fox_num = 0
@@ -182,6 +213,7 @@ class GameView(arcade.Window):
                 fox_num += 1
             elif self.sprites[i].type == "rat":
                 food_num += 1
+
 
         for i in range(len(self.plants)):
             if self.plants[i].type == "berrybush":

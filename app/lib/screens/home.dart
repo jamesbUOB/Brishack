@@ -115,28 +115,36 @@ class _HomePageState extends State<HomePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "Welcome to Bristol’s Living City:",
+                            Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                              "Welcome to Bristol's Living City:\n",
+                              textAlign:  TextAlign.center,
                               style: TextStyle(
                                 fontSize: 26,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black87,
                               ),
-                            ),
-                            SizedBox(height: 5),
-                            Text(
-                              "Where nature and urban life collide!",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black54,
                               ),
                             ),
+                            SizedBox(height: 5),
+                           Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                              "Where nature and urban life intertwine!\n",
+                              textAlign:  TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green[700],
+                              ),
+                            ),
+                           ),
                             SizedBox(height: 15),
 
                             // Fun Fact
                             Text(
-                              "🌿 Did you know? More than 90% of residents live within 300 meters of a green space, making it one of the best cities for urban biodiversity.",
+                              "🌿 Did you know? More than 90% of residents live within 300 meters of a green space making it one of the best cities for urban biodiversity.\n",
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.black87,
@@ -146,36 +154,59 @@ class _HomePageState extends State<HomePage> {
                             SizedBox(height: 15),
 
                             // Exploration Points
-                            Text(
+                              Align(
+                              alignment: Alignment.center,
+                              child: Text(
                               "Step into Bristol’s spaces and explore:",
+                              textAlign:  TextAlign.center,
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black87,
                               ),
                             ),
+                              ),
                             SizedBox(height: 5),
-                            Text(
+                            Align(
+                              alignment: Alignment.center,
+                              child: Text(
                               "• How foxes and rats survive in Bristol’s urban landscape\n"
                               "• The impact of pollution, food availability, and climate shifts\n"
-                              "• The delicate balance between wildlife, urban expansion, and biodiversity.",
+                              "• The delicate balance between wildlife, urban expansion, and biodiversity.\n",
+                              textAlign:  TextAlign.center,
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.black87,
                               ),
                             ),
+                            ),
                             SizedBox(height: 15),
 
                             // Call to Action
-                            Text(
-                              "🌱 Your journey starts here!",
+                             Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                              "🌱 What will you discover?",
+                              textAlign:  TextAlign.center,
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.green[700],
                               ),
                             ),
+                             ),
                           ],
+                        ),
+                      ),
+                      
+                      //Right Image
+                       Container(
+                        width: 300,
+                        height: 400,
+                        padding: EdgeInsets.only(left: 0),
+                        child: Image.asset(
+                          'assets/images/brandon.jpeg',
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ],
@@ -183,11 +214,29 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
+            const SliverToBoxAdapter(
+              child: SizedBox(height: 20),),
 
             // Space before button
             const SliverToBoxAdapter(
-              child: SizedBox(height: 50),
+              child: SizedBox(height: 20),
             ),
+             SliverToBoxAdapter(
+              child: Center(
+             child: Padding(
+                  padding: EdgeInsets.only(top: 10), // Adjust the padding as needed
+                  child: Text(
+                    "Your journey starts here!",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+              ),
+             ),),),),
+             const SliverToBoxAdapter(
+              child: SizedBox(height: 40),
+             ),
+
 
             // Button at the Bottom
             SliverToBoxAdapter(
@@ -210,8 +259,8 @@ class _HomePageState extends State<HomePage> {
                       );
                     },
                     child: const Text(
-                      'Begin Your Exploration!',
-                      style: TextStyle(fontSize: 18, color: Colors.white),
+                      'Explore!',
+                      style: TextStyle(fontSize: 25, color: Colors.white),
                     ),
                   ),
                 ),

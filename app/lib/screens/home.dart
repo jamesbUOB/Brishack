@@ -38,18 +38,31 @@ class _HomePageState extends State<HomePage> {
               width: 500,
               height: 500,
             ),
-            const Text(
-              'Your Bristol; Your Future', // Your text
+            Text(
+              'Your Bristol Your Future', // Your text
               style: TextStyle(
-                fontSize: 30,
+                fontSize: 70,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                fontStyle: FontStyle.italic,
+                color: const Color.fromARGB(255, 31, 61, 42),
+                 shadows: [
+                  Shadow(
+                offset: Offset(3, 3),
+                blurRadius: 5,
+                color: Colors.black.withOpacity(0.5),
+              ),
+                ],
               ),
             ),
           ],
         ),
       ),
     ),
+    const SliverToBoxAdapter(
+              child: SizedBox(
+                height: 50, // Add space between the container and the button
+              ),
+            ),
     const SliverToBoxAdapter(child: SizedBox(height: 100)), // Add space between the image and the container
              SliverToBoxAdapter(
               child: Padding(

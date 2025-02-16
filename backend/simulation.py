@@ -16,6 +16,7 @@ fox_numbers = []
 food_available = []
 waste_mode = False
 road_mode = False
+mist_mode = False
 
 
 class Mist(arcade.Sprite):
@@ -166,7 +167,8 @@ class GameView(arcade.Window):
         self.plants.draw()
         self.urban.draw()
         self.sprites.draw()
-        self.mist.draw()
+        if mist_mode:
+            self.mist.draw()
 
     
     def on_update(self, delta_time):
@@ -181,10 +183,11 @@ class GameView(arcade.Window):
             
         hit_list = arcade.check_for_collision_with_list(self.mist,self.foxs)
         for f in hit_list:
-                f.health -= 0.5
+                f.health -= 1
                 f.health_bar.update_colors(new_full_colour=arcade.color.GREEN)
         
-        self.mist.update()
+        if mist_mode:
+            self.mist.update()
 
         animals.plants.update_bushes(self.plants)
         animals.fox_death(self.sprites)

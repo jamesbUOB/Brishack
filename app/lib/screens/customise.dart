@@ -77,11 +77,94 @@ class _CustomisePageState extends State<CustomisePage> {
         ),
         child: CustomScrollView(
           slivers: [
-
-
-            ],
-        ))
-        );
+             SliverToBoxAdapter(
+    child: Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Container(
+        height: 200,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: const EdgeInsets.all(20),
+        ),),),
+          SliverToBoxAdapter(
+    child: Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Container(
+        height: 200,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: const EdgeInsets.all(20),
+        ),),),
+          SliverToBoxAdapter(
+    child: Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Container(
+        height: 200,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: const EdgeInsets.all(20),
+        ),),),
+          SliverToBoxAdapter(
+    child: Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Container(
+        height: 200,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: const EdgeInsets.all(20),
+        ),),),
+ SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      label: const Text('Back to Home', style: TextStyle(color: Colors.white)),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 13, 87, 15)),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const CustomisePage()),
+                        );
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 13, 87, 15)),
+                      ),
+                      child: Row(
+                        children: const [
+                          Text('Next', style: TextStyle(color: Colors.white)),
+                          SizedBox(width: 5), // Add some space between the text and the icon
+                          Icon(Icons.arrow_forward, color: Colors.white),
+                        ],
+                      ),
+                           ),
+                  ],
+                ),
+                   ),
+            ),
+               ],
+        ),
+            ),
+    );
+  
+      
         
         /**Center(
           child: Column(

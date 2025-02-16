@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'customise.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class Introduction extends StatefulWidget {
   const Introduction({Key? key}) : super(key: key); // Added constructor
@@ -128,7 +127,10 @@ class _IntroductionState extends State<Introduction> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        // Add your navigation logic here for the "Next" button
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const CustomisePage()),
+                        );
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 13, 87, 15)),

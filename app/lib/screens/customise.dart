@@ -56,6 +56,11 @@ class _CustomisePageState extends State<CustomisePage> {
 
   @override
   Widget build(BuildContext context) {
+    const List<String> choices = <String>[
+      'Low',
+      'Medium',
+      'High',
+    ];
     return Scaffold(
        body: Container(
         width: double.infinity,
@@ -70,10 +75,26 @@ class _CustomisePageState extends State<CustomisePage> {
             ],
           ),
         ),
-        child: Center(
+        child: CustomScrollView(
+          slivers: [
+
+
+            ]
+          ],
+        ))
+        );
+        
+        /**Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Container(
+                child: Text(
+                  "Customise your ecosystem simulation",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  textAlign: TextAlign.center,
+                )
+              ),
               Text('Connection Status: $connectionStatus'),
               SizedBox(height: 20),
               Text('Message from server:'),
@@ -88,7 +109,7 @@ class _CustomisePageState extends State<CustomisePage> {
               ),
             ],
           ),
-    ),
-));
-  }
+    ),*/
+
+}
 }

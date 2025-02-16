@@ -1,17 +1,19 @@
 import random
 import arcade
 import requests
-import animals
 import time
-
+import animals, humans
 import arcade.draw
 from perlin import world_generation
+
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 800
 TILE_SIZE = 10
 WINDOW_TITLE = "Ecosystem Simulation"
 MOVEMENT_SPEED = 0.2
-import os
+
+waste_mode = True
+
 
 
 class GameView(arcade.Window):
@@ -26,9 +28,7 @@ class GameView(arcade.Window):
 
 
         self.background_color = arcade.csscolor.LIGHT_GREEN
-        
         self.background = None
-
         self.grid = [[0 for _ in range(self.ax)] for _ in range(self.ay)]
 
 
@@ -55,6 +55,16 @@ class GameView(arcade.Window):
             bush.center_x = random.uniform(10, 790)
             bush.center_y = random.uniform(10, 790)
             self.plants.append(bush)
+
+
+
+        # add waste to the map
+        if waste_mode == True:
+            for i in range(10):
+                waste = humans.Waste(self.sprites, "resources/garbage.png", scale=2.5)
+                waste.center_x = random.uniform(10, 790)
+                waste.center_y = random.uniform(10, 790)
+                self.sprites.append(waste)
 
 
         self.change_x = MOVEMENT_SPEED

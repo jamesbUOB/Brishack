@@ -2,8 +2,8 @@ import random
 from typing import Tuple
 import arcade
 from pytiled_parser import Color
-import plants
 import time
+import plants, humans
 
 INDICATOR_BAR_OFFSET = 32
 WINDOW_WIDTH = 800
@@ -105,10 +105,15 @@ class Fox(Animal):
             animal_reproduce(self, self.sprites)
         elif self.hunger <= 700:
             food = arcade.SpriteList()
-            # move toward rats or berries  self.  self.  self.set_reproduce_false()self.set_reproduce_false()  self.set_reproduce_false()  self.set_reproduce_false()set_reproduce_false()  self.set_reproduce_false()roduce_false()
+            # move toward rats or berries or trash
             for i in range(len(self.sprites)):
                 if type(self.sprites[i]) == Rat:
                     food.append(self.sprites[i]) 
+                elif type(self.sprites[i]) == arcade.SpriteSolidColor:
+                    pass
+                elif self.sprites[i].type == "waste":
+                    food.append(self.sprites[i])
+
 
             for i in range(len(self.plant_list)):
                 if type(self.plant_list[i]) == plants.BerryBush:
@@ -169,6 +174,9 @@ def sprite_collisions(self, sprite, sprites, plant_list, type):
             plant_list.append(bush)
             self.hunger += 500
             if self.hunger > 1000: self.hunger = 1000
+        elif sprite.type == "waste":
+            sprite.kill()
+            self.kill_fox()
 
     if collision and type == "mate":
         if self.type == sprite.type:
@@ -183,7 +191,7 @@ def fox_death(sprites):
             currentTime = plants.time.time()
             elapsed = currentTime - sprites[i].born
 
-            if elapsed > 60:
+            if elapsed > 45:
                 # kill the fox
                 sprites[i].texture = arcade.load_texture("resources/foxold.png")
                 if sprites[i].health > 0: sprites[i].health -= 1
@@ -196,7 +204,7 @@ def animal_reproduce(sprite, sprites):
         if (type(sprite) == type(sprites[i])) and sprite != sprites[i]:
             animals.append(sprites[i])
     
-    if len(animals) >= 0:
+    if len(animals) > 0:
         closest_animal = arcade.get_closest_sprite(sprite, animals)
         follow_sprite(sprite, closest_animal[0])
         sprite_collisions(sprite, closest_animal[0], sprites, sprites, "mate") 

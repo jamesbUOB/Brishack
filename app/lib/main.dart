@@ -88,7 +88,6 @@ class _MyAppState extends State<MyApp> {
 }**/
 
 import 'package:flutter/material.dart';
-import 'services/socket_service.dart';
 import 'screens/home.dart';
 
 void main() {
@@ -102,13 +101,13 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   // Create a Socket.IO client instance.
-  final SocketService socketService = SocketService();
+  //final SocketService socketService = SocketService();
 
   @override
   void initState() {
     super.initState();
     // Initialize your socket connection here
-    socketService.connect();
+    //socketService.connect();
 
   }
 

@@ -28,20 +28,66 @@ class _HomePageState extends State<HomePage> {
           slivers: [
             // Logo at the Top
             SliverToBoxAdapter(
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 40),
-                  child: Image.asset(
-                    'assets/images/logo.png',
-                    width: 200,
-                    height: 200,
-                  ),
-                ),
+      child: Center(
+        child: Column(
+          //mainAxisSize: MainAxisSize.min, // Minimize vertical space
+          children: [
+            Image.asset(
+              'assets/images/1739708480986lwnjvf57-remove-background.com.png',
+              width: 500,
+              height: 500,
+            ),
+            /**Text(
+              'Your Bristol Your Future', // Your text
+              style: TextStyle(
+                fontSize: 70,
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+                color: const Color.fromARGB(255, 31, 61, 42),
+                 shadows: [
+                  Shadow(
+                offset: Offset(3, 3),
+                blurRadius: 5,
+                color: Colors.black.withOpacity(0.5),
+              ),
+                ],
+              ),
+            ),**/
+          DefaultTextStyle(
+  style: TextStyle(
+    fontSize: 70,
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+                color: const Color.fromARGB(255, 31, 61, 42),
+                 shadows: [
+                  Shadow(
+                offset: Offset(3, 3),
+                blurRadius: 5,
+                color: Colors.black.withOpacity(0.5),
+              ),
+                ],
+  ),
+  child: AnimatedTextKit(
+    animatedTexts: [
+      WavyAnimatedText('Your Bristol Your Future'),
+      //WavyAnimatedText('Your Future'),
+    ],
+    isRepeatingAnimation: true,
+    /**onTap: () {
+      print("Tap Event");
+    },**/
+  ),)
+        ],
+        ),
+      ),
+    ),
+    const SliverToBoxAdapter(
+              child: SizedBox(
+                height: 50, // Add space between the container and the button
               ),
             ),
-
-            // Introduction Section with Image + Text
-            SliverToBoxAdapter(
+    const SliverToBoxAdapter(child: SizedBox(height: 100)), // Add space between the image and the container
+             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Container(

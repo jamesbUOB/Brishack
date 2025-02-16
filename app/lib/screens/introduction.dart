@@ -73,61 +73,64 @@ class _IntroductionState extends State<Introduction> {
         ),
         child: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(
-              child: Center( // Wrap button in Center for better layout
-                child: ElevatedButton(
-                  onPressed: () {
-                    socket.emit('message', 'start');
-                  },
-                  child: const Text('Start simulation'),
-                ),
-              ),
-            ),
-              const SliverToBoxAdapter(
-              child: SizedBox(
-                height: 50, // Add space between the container and the button
-              ),
-            ),
-    const SliverToBoxAdapter(child: SizedBox(height: 50)), // Add space between the image and the container
-             SliverToBoxAdapter(
-              child: Padding(
+             SliverToBoxAdapter(child: SizedBox(height: 20)),
+            SliverToBoxAdapter(child: Padding(
+              
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  padding: const EdgeInsets.all(20),
-                  height: 100,
-            //       decoration: BoxDecoration(
-            //         color: Colors.white,
-            //         borderRadius: BorderRadius.circular(20),
-            //       ),
-            //       padding: EdgeInsets.all(20),
-            //       height: 100,))),
-            //       SliverToBoxAdapter(child: Padding(
-            //     padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            //     child: Container(
-            //       decoration: BoxDecoration(
-            //         color: Colors.white,
-            //         borderRadius: BorderRadius.circular(20),
-            //       ),
-            //       padding: EdgeInsets.all(20),))),
-            //       SliverToBoxAdapter(child: Padding(
-            //     padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            //     child: Container(
-            //       decoration: BoxDecoration(
-            //         color: Colors.white,
-            //         borderRadius: BorderRadius.circular(20),
-            //       ),
-            //       padding: EdgeInsets.all(20),)))
-          // ],
+                  padding: EdgeInsets.all(20),
+                  height: 200,))),
+                  SliverToBoxAdapter(child: SizedBox(height: 20)),
+             SliverToBoxAdapter(child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: EdgeInsets.all(20),
+                  height: 200,))),
+                  SliverToBoxAdapter(child: SizedBox(height: 20)),
+             SliverToBoxAdapter(child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: EdgeInsets.all(20),
+                  height: 200,))),
+                  SliverToBoxAdapter(child: SizedBox(height: 20)),
+             SliverToBoxAdapter(child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: EdgeInsets.all(20),
+                  height: 200,))),
+                  SliverToBoxAdapter(child: SizedBox(height: 20)),
+                  SliverToBoxAdapter(
+              child: Center( // Wrap button in Center for better layout
+                child: ElevatedButton(
+                  onPressed: () {
+                    socket.emit('message', 'start');
+                  },
+
+                  child: const Text('Start simulation'),
+                ),
+              ),
+            ),
+            
+          ],
         ),
               ),
-             ),
-          ],
-      ),)
-    
-    );
+             );
+          
   }
 }

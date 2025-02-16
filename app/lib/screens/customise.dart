@@ -79,8 +79,7 @@ class _CustomisePageState extends State<CustomisePage> {
           slivers: [
 
 
-            ]
-          ],
+            ],
         ))
         );
         

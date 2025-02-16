@@ -2,6 +2,7 @@ import random
 from typing import Tuple
 import arcade
 from pytiled_parser import Color
+import plants
 
 INDICATOR_BAR_OFFSET = 32
 WINDOW_WIDTH = 800
@@ -10,7 +11,7 @@ MOVEMENT_SPEED = 0.5
 
 class Animal(arcade.Sprite):
 
-    def __init__(self, sprites, image_file, scale=0.2):
+    def __init__(self, sprites, image_file, scale):
         super().__init__(image_file, scale)
 
         self.sprites = sprites
@@ -22,7 +23,7 @@ class Animal(arcade.Sprite):
 
 # fox
 class Fox(Animal):
-    def __init__(self, sprites, image_file, scale=0.2):
+    def __init__(self, sprites, plants, image_file, scale):
         super().__init__(sprites, image_file, scale)
 
         self.health = 500
@@ -31,6 +32,8 @@ class Fox(Animal):
         self.health_bar = IndicatorBar(self, sprites, (0.0, 0.0), scale=(0.75,0.75), full_colour=arcade.color.RED)
         self.hunger_bar = IndicatorBar(self, sprites, (0.0, 0.0), full_colour=arcade.color.MEAT_BROWN, scale=(0.75, 0.75))
     
+        self.plants = plants
+
     def update(self):
         if self.hunger <= 0:
             self.health -= 1
@@ -69,19 +72,22 @@ class Fox(Animal):
             self.change_y = random.choice([-1, 1]) * random.normalvariate(0.4, 0.1)
 
 
-        # eat rats
-        if self.hunger <= 500:
-            rats = arcade.SpriteList()
-            # move toward rats
+        # eat rats and berries
+        if self.hunger <= 700:
+            food = arcade.SpriteList()
+            # move toward rats or berries
             for i in range(len(self.sprites)):
                 if type(self.sprites[i]) == Rat:
-                    rats.append(self.sprites[i]) 
-                    
-            if len(rats) != 0:
-                closest_rat = arcade.get_closest_sprite(self, rats)
-                follow_sprite(self, closest_rat[0])
-                sprite_collisions(self, closest_rat[0])
+                    food.append(self.sprites[i]) 
 
+            for i in range(len(self.plants)):
+                if type(self.plants[i]) == plants.BerryBush:
+                    food.append(self.plants[i])
+                    
+            if len(food) != 0:
+                closest_food = arcade.get_closest_sprite(self, food)
+                follow_sprite(self, closest_food[0])
+                sprite_collisions(self, closest_food[0], self.sprites, self.plants)
                 
         
         if self.health <= 0:
@@ -109,12 +115,21 @@ def follow_sprite(self, sprite):
         self.center_x -= min(speed, self.center_x - sprite.center_x)
 
 
-def sprite_collisions(self, sprite):
+def sprite_collisions(self, sprite, sprites, plant_list):
     collision = arcade.check_for_collision(self, sprite)
 
     if collision:
-        sprite.kill()
-        self.hunger = 500
+        if type(sprite) == Rat:
+            sprite.kill()
+            self.hunger = 1000
+        elif type(sprite) == plants.BerryBush:
+            bush = plants.EmptyBush(sprites, "resources/emptybush.png", 2)
+            bush.center_x = sprite.center_x
+            bush.center_y = sprite.center_y
+            sprite.kill()
+            plant_list.append(bush)
+            self.hunger += 500
+            if self.hunger > 1000: self.hunger = 1000
 
 
 

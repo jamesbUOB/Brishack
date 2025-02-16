@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
           //mainAxisSize: MainAxisSize.min, // Minimize vertical space
           children: [
             Image.asset(
-              'assets/images/1739708480986lwnjvf57-remove-background.com.png',
+              'assets/images/logo.png',
               width: 500,
               height: 500,
             ),

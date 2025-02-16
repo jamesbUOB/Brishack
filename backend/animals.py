@@ -17,7 +17,6 @@ DEATH_RATE = 1
 
 class Animal(arcade.Sprite):
 
-
    def __init__(self, sprites, grid, image_file, scale):
        super().__init__(image_file, scale)
 
@@ -30,7 +29,7 @@ class Animal(arcade.Sprite):
       
 # fox
 class Fox(Animal):
-    def __init__(self, sprites, grid, plant_list, image_file, scale):
+    def __init__(self, sprites, grid, plant_list, road_coords, image_file, scale):
         super().__init__(sprites, grid, image_file, scale)
         self.type = "fox"
 
@@ -43,12 +42,16 @@ class Fox(Animal):
         self.plant_list = plant_list
         self.born = plants.time.time()
         self.reproduce = False
+        self.road_coords = road_coords
+        self.on_road = False
 
     def createNew(self):
-        fox = Fox(self.sprites, self.grid, self.plant_list, "resources/fox.png", 0.2)
+        fox = Fox(self.sprites, self.grid, self.plant_list, self.road_coords, "resources/fox.png", scale=0.2)
         fox.center_x = self.center_x
         fox.center_y = self.center_y
-        self.sprites.append(fox)  
+        
+        self.sprites.append(fox)
+
 
     def set_reproduce_false(self):
         self.reproduce = False
@@ -86,10 +89,7 @@ class Fox(Animal):
             self.center_y + (1.5*INDICATOR_BAR_OFFSET)
         )
 
-        # Move the sprite
-        self.center_x += self.change_x
-        self.center_y += self.change_y
-
+        road_collisions(self)
         # Randomize direction and speed when colliding with window edges
         if self.left <= 0 or self.right >= WINDOW_WIDTH:
             self.change_x = -1 * self.change_x
@@ -97,6 +97,11 @@ class Fox(Animal):
 
         if self.top >= WINDOW_HEIGHT or self.bottom <= 0:
             self.change_y = -1 * self.change_y
+
+        
+        # Move the sprite
+        self.center_x += self.change_x
+        self.center_y += self.change_y
 
         # Occasionally change direction randomly
         if random.random() < 0.01:  # 1% chance per update
@@ -144,22 +149,35 @@ class Fox(Animal):
 
 def follow_sprite(self, sprite):
     speed = MOVEMENT_SPEED
-    if self.hunger <= 200:
-        speed = MOVEMENT_SPEED * 2
-    if self.reproduce == True: speed = MOVEMENT_SPEED * 2
+    if self.on_road == False:
+        if self.hunger <= 200:
+            speed = MOVEMENT_SPEED * 2
+        if self.reproduce == True: speed = MOVEMENT_SPEED * 2
 
-    if self.center_y < sprite.center_y:
-        self.center_y += min(speed, sprite.center_y - self.center_y)
+        if self.center_y < sprite.center_y:
+            self.center_y += min(speed, sprite.center_y - self.center_y)
 
-    elif self.center_y > sprite.center_y:
-        self.center_y -= min(speed, self.center_y - sprite.center_y)
+        elif self.center_y > sprite.center_y:
+            self.center_y -= min(speed, self.center_y - sprite.center_y)
 
-    if self.center_x < sprite.center_x:
-        self.center_x += min(speed, sprite.center_x - self.center_x)
+        if self.center_x < sprite.center_x:
+            self.center_x += min(speed, sprite.center_x - self.center_x)
 
-    elif self.center_x > sprite.center_x:
-        self.center_x -= min(speed, self.center_x - sprite.center_x)
+        elif self.center_x > sprite.center_x:
+            self.center_x -= min(speed, self.center_x - sprite.center_x)
 
+
+def road_collisions(sprite):
+    if (sprite.center_x >= sprite.road_coords[0]) and (sprite.center_x <= sprite.road_coords[1]):
+        if sprite.center_x < ((sprite.road_coords[1] - sprite.road_coords[0])/2 + sprite.road_coords[0]):
+            # on the left
+            sprite.change_x = -0.6
+        else:
+            sprite.change_x = 0.6
+        
+        sprite.on_road = True
+    else:
+        sprite.on_road = False
 
 def sprite_collisions(self, sprite, sprites, plant_list, type):
     collision = arcade.check_for_collision(self, sprite)
@@ -215,15 +233,18 @@ def animal_reproduce(sprite, sprites):
 
 
 class Rat(Animal):
-    def __init__(self, sprites, grid, image_file, scale=0.2):
+    def __init__(self, sprites, road_coords, grid, image_file, scale=0.2):
         super().__init__(sprites, grid, image_file, scale)
         self.type = "rat"
         self.start = (int(time.time()) % 60)
         self.last = self.start
         self.grid = grid
+        self.road_coords = road_coords
+        self.on_road = False
     
     def update(self):
         # Move the sprite
+        road_collisions(self)
         self.center_x += self.change_x
         self.center_y += self.change_y
 
@@ -239,11 +260,10 @@ class Rat(Animal):
         if random.random() < 0.01:  # 1% chance per update
             self.change_x = random.choice([-1, 1]) * random.normalvariate(0.4, 0.1)
             self.change_y = random.choice([-1, 1]) * random.normalvariate(0.4, 0.1)
-            
 
 
-def spawn_rat(sprites, grid):
-    rat = Rat(sprites, grid,"resources/rat.png", scale=1)
+def spawn_rat(sprites, grid, road_coords):
+    rat = Rat(sprites, road_coords, grid,"resources/rat.png", scale=1)
     rat.center_x = random.uniform(10, 790)
     rat.center_y = random.uniform(10, 790)
 
@@ -254,8 +274,8 @@ def spawn_rat(sprites, grid):
     sprites.append(rat)
 
 
-def spawn_fox(sprites, plant_list, grid):
-    fox = Fox(sprites, grid, plant_list, "resources/fox.png", scale=0.2)
+def spawn_fox(sprites, plant_list, grid, road_coords):
+    fox = Fox(sprites, grid, plant_list, road_coords, "resources/fox.png", scale=0.2)
     fox.center_x = random.uniform(10, 790)
     fox.center_y = random.uniform(10 ,790)
 

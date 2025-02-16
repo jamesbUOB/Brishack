@@ -14,7 +14,7 @@ WINDOW_TITLE = "Ecosystem Simulation"
 MOVEMENT_SPEED = 0.2
 fox_numbers = []
 food_available = []
-waste_mode = True
+waste_mode = False
 
 
 class Mist:
@@ -49,12 +49,25 @@ class GameView(arcade.Window):
         # list of all sprites
         self.sprites = arcade.SpriteList()
         self.plants = arcade.SpriteList()
+        self.urban = arcade.SpriteList()
         self.world_tiles = None
 
+        road_y = 0
+        road_centre = random.uniform(100,700) 
+        for x in range(15):
+            rd = humans.Road("resources/road.png", self.sprites)
+            rd.center_y = road_y
+            rd.center_x = road_centre
+            self.urban.append(rd)
+            road_y += 76
+
+        self.road_start_x = road_centre - rd.width/2 - 20
+        self.road_start_y = road_centre + rd.width/2 + 20
+        self.road_coords = [self.road_start_x, self.road_start_y]
 
         for i in range(4):
-            animals.spawn_fox(self.sprites, self.plants, self.grid)   
-            animals.spawn_rat(self.sprites, self.grid)
+            animals.spawn_fox(self.sprites, self.plants, self.grid, self.road_coords)   
+            animals.spawn_rat(self.sprites, self.grid, self.road_coords)
 
 
         for i in range(10):
@@ -122,8 +135,9 @@ class GameView(arcade.Window):
 
         self.clear()
         self.terrain_list.draw(pixelated = True)
-        self.sprites.draw()
         self.plants.draw()
+        self.urban.draw()
+        self.sprites.draw()
 
     
     def on_update(self, delta_time):
@@ -146,11 +160,11 @@ class GameView(arcade.Window):
                 if (time.time() - self.start) > 8:
                 # spawn one trash and one rat
                     humans.spawn_waste(self.sprites, self.grid)
-                    animals.spawn_rat(self.sprites, self.grid)
+                    animals.spawn_rat(self.sprites, self.grid, self.road_coords)
                     self.start = time.time()
             else:
-                animals.spawn_rat(self.sprites, self.grid)
-                animals.spawn_rat(self.sprites, self.grid)
+                animals.spawn_rat(self.sprites, self.grid, self.road_coords)
+                animals.spawn_rat(self.sprites, self.grid, self.road_coords)
                 self.start = time.time()
         
 

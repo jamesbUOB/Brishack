@@ -1,0 +1,42 @@
+import 'package:flutter/material.dart'
+import 'package:flutter_animate/flutter_animate.dart'
+
+class HomePage extends StatefulWidget {
+    @override
+    Widget build(BuildContext context) {
+        return Scaffold(
+            body: Container(
+            // Background
+                width: double.infinity,
+                height: double.infinity,
+            decoration: const BoxDecoration(
+            gradient: LinearGradient(
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            colors: [
+            Color(0xFF8D6E63), // Earthy Brown
+            Color(0xFF4CAF50), // Green
+            ],
+            ),
+        ),
+        ),
+        // Display Homepage Content
+        child: Column(
+            children: [
+                const Text(
+                    "What will you discover?"
+                    style: TextStyle(fontSize: 18, color: Colors.white)
+                )
+                const SizedBox(height: 20),
+                /*
+                ElevatedButton(
+                    onPressed: null, // default for now
+                    style: bac
+                )*/
+          ],
+
+            
+        ))
+
+    }
+}

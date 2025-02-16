@@ -10,9 +10,9 @@ class _IntroductionState extends State<Introduction> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       appBar: AppBar(
-        title: Text('Introduction Screen'),
-      ),
+    //    appBar: AppBar(
+        // title: Text('Introduction Screen'),
+      // ),
        body: Container(
         width: double.infinity,
         height: double.infinity,

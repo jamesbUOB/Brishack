@@ -153,7 +153,48 @@ class _IntroductionState extends State<Introduction> {
       ),
     ),
   ),
-],
+
+
+     SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      label: const Text('Back to Home', style: TextStyle(color: Colors.white)),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 13, 87, 15)),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Add your navigation logic here for the "Next" button
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 13, 87, 15)),
+                      ),
+                      child: Row(
+                        children: const [
+                          Text('Next', style: TextStyle(color: Colors.white)),
+                          SizedBox(width: 5), // Add some space between the text and the icon
+                          Icon(Icons.arrow_forward, color: Colors.white),
+                        ],
+                      ),
+                           ),
+                  ],
+                ),
+                   ),
+            ),
+               ],
+        ),
+            ),
+    );
+  
                   
                   /**SliverToBoxAdapter(
               child: Center( // Wrap button in Center for better layout
@@ -167,11 +208,6 @@ class _IntroductionState extends State<Introduction> {
               ),
             ),**/
 
-        
-        ),
-              ),
-             );
-          
   }
 
   Widget factItem(String title, String description) {

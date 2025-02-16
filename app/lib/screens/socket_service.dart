@@ -1,5 +1,6 @@
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
+
 class SocketService {
   late IO.Socket socket;
   String connectionStatus = 'Disconnected';

@@ -29,12 +29,28 @@ class _HomePageState extends State<HomePage> {
         child:  CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: Center(
-                child: Image.asset('assets/images/1739708480986lwnjvf57-remove-background.com.png',
-                                    width: 500,
-                                    height: 500,
-                                  ),
-            ),),
+      child: Center(
+        child: Column(
+          //mainAxisSize: MainAxisSize.min, // Minimize vertical space
+          children: [
+            Image.asset(
+              'assets/images/1739708480986lwnjvf57-remove-background.com.png',
+              width: 500,
+              height: 500,
+            ),
+            const Text(
+              'Your Bristol; Your Future', // Your text
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+    const SliverToBoxAdapter(child: SizedBox(height: 100)), // Add space between the image and the container
              SliverToBoxAdapter(
               child: Padding(
     padding: const EdgeInsets.symmetric(horizontal: 20.0), // Adjust the padding as needed

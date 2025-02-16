@@ -35,39 +35,22 @@ class _HomePageState extends State<HomePage> {
                                     height: 500,
                                   ),
             ),),
-
-            const SliverToBoxAdapter(
-              child: Center( 
-                child: Padding(
-                  padding: EdgeInsets.all(20),
-                  child: SizedBox(
-                    width: double.infinity,
-                      child: Text(
-                  'Introduction paragraph',
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ),
-            ),
-            ),
              SliverToBoxAdapter(
-              child: SizedBox(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                height: 600,
-              ),
-              ),
+              child: Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 20.0), // Adjust the padding as needed
+    child: Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      height: 600,
+      width: double.infinity, // Ensure the container takes the available width within the padding
+    ),
+  ),
              ),
-             SliverToBoxAdapter(
+             const SliverToBoxAdapter(
               child: SizedBox(
-                height: 20, // Add space between the container and the button
+                height: 50, // Add space between the container and the button
               ),
             ),
          SliverToBoxAdapter(

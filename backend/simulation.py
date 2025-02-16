@@ -84,15 +84,14 @@ class GameView(arcade.Window):
 
 
         self.clear()
-        self.sprites.draw()
-        self.plants.draw()
-
         arcade.draw_texture_rect(
             self.background,
             arcade.LBWH(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT),
         )
-        
         self.sprites.draw()
+        self.plants.draw()
+
+    
     
     def on_update(self, delta_time):
 

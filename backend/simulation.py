@@ -4,12 +4,14 @@ import requests
 import time
 import animals
 
+import arcade.draw
 from perlin import world_generation
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 800
 TILE_SIZE = 10
 WINDOW_TITLE = "Ecosystem Simulation"
 MOVEMENT_SPEED = 0.2
+import os
 
 
 class GameView(arcade.Window):
@@ -20,7 +22,11 @@ class GameView(arcade.Window):
         self.ax = int(WINDOW_WIDTH / TILE_SIZE)
         self.ay = int(WINDOW_HEIGHT/ TILE_SIZE)
 
+        relative_path = 'terrain.png'
+
         self.background_color = arcade.csscolor.LIGHT_GREEN
+        
+        self.background = None
 
         self.grid = [[0 for _ in range(self.ax)] for _ in range(self.ay)]
 
@@ -54,34 +60,26 @@ class GameView(arcade.Window):
             return (130, 210, 130)  # Brighter light green
     
     def setup(self):
+        
+        self.background = arcade.load_texture("terrain.png")
+            
         self.ax = int(WINDOW_WIDTH / TILE_SIZE)
         self.ay = int(WINDOW_HEIGHT / TILE_SIZE)
         self.grid = world_generation(self.ax, self.ay, self.grid)
         # sets up and restarts game when called
         self.change_x = MOVEMENT_SPEED
-        self.render_world_tiles()
-    
-    def render_world_tiles(self):
-        self.batch = arcade.shape_list.ShapeElementList()
-        for row in range(self.ay):
-            for col in range(self.ax):
-                color = self.color_assignment(self.grid[row][col])
-                left = col * TILE_SIZE  
-                bottom = row * TILE_SIZE 
-
-                rect = arcade.draw_lbwh_rectangle_filled(
-                    left, bottom, TILE_SIZE, TILE_SIZE, color
-                )
-                self.batch.append(rect)
-        self.world_tiles = self.batch
 
     def on_draw(self):
         # screen
         # clear should be called at the start
-        if self.world_tiles:
-            self.world_tiles.draw()
+
 
         self.clear()
+
+        arcade.draw_texture_rect(
+            self.background,
+            arcade.LBWH(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT),
+        )
         
         self.sprites.draw()
     

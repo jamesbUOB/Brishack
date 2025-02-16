@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
                       );
                     },
                     child: const Text(
-                      'Start Exploring',
+                      'Begin Your Exploration!',
                       style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
               ),

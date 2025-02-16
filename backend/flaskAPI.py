@@ -17,7 +17,6 @@ def send_data():
 
     socketio.emit('update', data)
     
-
     return "200"
 
 

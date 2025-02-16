@@ -1,7 +1,7 @@
 import random
 import arcade
 import requests
-import animals
+import animals, humans
 import arcade.draw
 from perlin import world_generation
 
@@ -55,17 +55,14 @@ class GameView(arcade.Window):
             self.plants.append(bush)
 
 
+
         # add waste to the map
-        if waste_mode:
+        if waste_mode == True:
             for i in range(10):
-                waste = animals.humans.Waste(self.sprites, "resources/garbage.png", scale=1)
+                waste = humans.Waste(self.sprites, "resources/garbage.png", scale=2.5)
                 waste.center_x = random.uniform(10, 790)
                 waste.center_y = random.uniform(10, 790)
                 self.sprites.append(waste)
-
-
-
-
 
 
         self.change_x = MOVEMENT_SPEED

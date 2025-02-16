@@ -35,41 +35,34 @@ class _HomePageState extends State<HomePage> {
                                     height: 500,
                                   ),
             ),),
-
-            const SliverToBoxAdapter(
-              child: Center( 
-                child: Padding(
-                  padding: EdgeInsets.only(top:20),
-                  
-              
-                      child: Text(
-                  "Your Bristol, Your Future",
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ),
-            ),
-            
              SliverToBoxAdapter(
-              child: SizedBox(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                height: 600,
-              ),
-              ),
+              child: Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 20.0), // Adjust the padding as needed
+    child: Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      height: 600,
+      width: double.infinity, // Ensure the container takes the available width within the padding
+    ),
+  ),
              ),
-             SliverToBoxAdapter(
-              child: SizedBox(
-                height: 20, // Add space between the container and the button
-              ),
-            ),
+             const SliverToBoxAdapter(
+              child: Center(
+              // child: SizedBox(
+              //   height: 50, // Add space between the container and the button
+              // ),
+                child: Padding(
+                  padding: EdgeInsets.only(top: 10), // Adjust the padding as needed
+                  child: Text(
+                    "Your Bristol, Your Future",
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.black,
+                ),
+            ),),),),
          SliverToBoxAdapter(
               child: Center(
                 child: Padding(

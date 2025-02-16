@@ -11,12 +11,6 @@ class _HomePageState extends State<HomePage> {
     @override
     Widget build(BuildContext context) {
         return Scaffold(
-        
-          // appBar: AppBar(
-          //   title: Text('Home Screen')
-          // ),
-          // body:Center(child: Text('Welcome to the Home Screen!'),),
-            // Background
             body: Container(
                 width: double.infinity,
                 height: double.infinity,
@@ -30,26 +24,27 @@ class _HomePageState extends State<HomePage> {
             ],
             ),
         ),
-        ),
+        
         // Display Homepage Content
-        /**Container(
-            padding: const EdgeInsets.all(20),
-        child: Column(
+          child: Container(
+          padding: const EdgeInsets.all(20),
+          child: Column(
             children: [
-                const Text(
-                    "What will you discover?"
-                    style: TextStyle(fontSize: 18, color: Colors.white)
-                )
-                const SizedBox(height: 20),
-                /*
-                ElevatedButton(
-                    onPressed: null, // default for now
-                    style: bac
-                )*/
-          ],z
+              const Text(
+                "What will you discover?",
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  // Add your onPressed code here!
+                },
+                child: const Text("Explore Bristol's EcoSystem"),
 
             
-        )**/);
+        ),
+          ],))),
+          );
 
     }
 }

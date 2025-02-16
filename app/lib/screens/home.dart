@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'introduction.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class HomePage extends StatefulWidget {
   @override

@@ -23,13 +23,21 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        child: const CustomScrollView(
+        child:  CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.all(20),
+              child: Center(
+                child: Image.asset('assets/images/1739708480986lwnjvf57-remove-background.com.png',
+                                    width: 200,
+                                    height: 200,
+                                  ),
+            ),),
+            SliverToBoxAdapter(
+              child: Center( 
+                child: Padding(
+                  padding: EdgeInsets.all(20),
                 child: Text(
-                  'What will you discover?',
+                  'Hackitat',
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
@@ -37,7 +45,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-            ),
+            )),
             
             SliverToBoxAdapter(
               

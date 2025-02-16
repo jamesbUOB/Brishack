@@ -10,8 +10,13 @@ class _HomePageState extends State<HomePage> {
     @override
     Widget build(BuildContext context) {
         return Scaffold(
-            body: Container(
+        
+          // appBar: AppBar(
+          //   title: Text('Home Screen')
+          // ),
+          // body:Center(child: Text('Welcome to the Home Screen!'),),
             // Background
+            body: Container(
                 width: double.infinity,
                 height: double.infinity,
             decoration: const BoxDecoration(

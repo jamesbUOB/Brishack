@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'customise.dart';
 
+
 class Introduction extends StatefulWidget {
   const Introduction({Key? key}) : super(key: key); // Added constructor
 
@@ -208,14 +209,17 @@ SliverToBoxAdapter(
                         Navigator.pop(context);
                       },
                       icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      label: const Text('Back to Home', style: TextStyle(color: Colors.white)),
+                      label: const Text('Back', style: TextStyle(color: Colors.white)),
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 13, 87, 15)),
                       ),
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        // Add your navigation logic here for the "Next" button
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const CustomisePage()),
+                        );
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 13, 87, 15)),

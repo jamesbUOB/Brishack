@@ -2,7 +2,7 @@ import random
 from typing import Tuple
 import arcade
 from pytiled_parser import Color
-import plants
+import plants, humans
 
 INDICATOR_BAR_OFFSET = 32
 WINDOW_WIDTH = 800
@@ -175,7 +175,7 @@ def fox_death(sprites):
             currentTime = plants.time.time()
             elapsed = currentTime - sprites[i].born
 
-            if elapsed > 60:
+            if elapsed > 45:
                 # kill the fox
                 sprites[i].texture = arcade.load_texture("resources/foxold.png")
                 if sprites[i].health > 0: sprites[i].health -= 1

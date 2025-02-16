@@ -52,12 +52,11 @@ class _CustomisePageState extends State<CustomisePage> {
     socket.disconnect();
     super.dispose();
   }
-
+ List<bool> choices = <bool>[ false,false,false ];
   @override
   Widget build(BuildContext context) {
-    List<bool> choices = <bool>[
-      false,false,false 
-    ];
+   
+
     return Scaffold(
        body: Container(
         width: double.infinity,
@@ -153,6 +152,30 @@ class _CustomisePageState extends State<CustomisePage> {
           borderRadius: BorderRadius.circular(20),
         ),
         padding: const EdgeInsets.all(20),
+        child: Center(child:
+        Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                child: Text(
+                  "Customise your ecosystem simulation",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  textAlign: TextAlign.center,
+                )
+              ),
+              Text('Connection Status: $connectionStatus'),
+              Text('Message from server:'),
+              Text(message, style: TextStyle(fontSize: 20)),
+              ElevatedButton(
+                onPressed: () {
+                  // Send a test message to the server.
+                  socket.emit('message', 'start');
+                },
+                child: Text('Start simulation'),
+              ),
+            ],
+          ),
+        ),
         ),),),
  SliverToBoxAdapter(
               child: Padding(

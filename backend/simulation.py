@@ -1,5 +1,6 @@
 import random
 import json
+import sys
 import arcade
 import requests
 import animals, humans
@@ -53,18 +54,25 @@ class Mist(arcade.Sprite):
         )
 
 
-def on_close():
-        data = {"fox_numbers": fox_numbers,
-                "food_numbers": food_available}
 
+class GameView(arcade.Window):
+    def on_close(self):
+        data = {
+            "fox_numbers": fox_numbers,
+            "food_numbers": food_available
+        }
 
+        # Send the POST request to Flask
         url = 'http://127.0.0.1:5000/end'
-        response = requests.post(url, json=data)
+        try:
+            response = requests.post(url, json=data)
+            print("Data sent to Flask, status code:", response.status_code)
+        except Exception as e:
+            print("Error sending data to Flask:", e)
+
         arcade.close_window()
         super().on_close()
 
-
-class GameView(arcade.Window):
     def __init__(self):
         super().__init__(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, 
                          resizable=True)
@@ -226,13 +234,14 @@ class GameView(arcade.Window):
         food_available.append(food_num)
 
         if time.time() - self.fullsimstart >= 60:
-            on_close()
+            self.close()
 
 
 def main(parameters):
    window = GameView()
    window.setup()
    arcade.run()
+   sys.exit(0)
 
 if __name__ == "__main__":
    main("default")

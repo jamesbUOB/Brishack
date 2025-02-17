@@ -8,6 +8,7 @@ class CustomisePage extends StatefulWidget {
 }
 
 class _CustomisePageState extends State<CustomisePage> {
+  // socket based code
   late IO.Socket socket;
   String connectionStatus = 'Disconnected';
   String message = '';
@@ -32,6 +33,9 @@ class _CustomisePageState extends State<CustomisePage> {
     socket.on('update', (data) {
       setState(() {
         message = data.toString();
+        // printing this will give you a long list of data once the simulation ends
+        // simulation length is set to 60 seconds
+        //print(message);
       });
       print('Update event: $data');
     });
@@ -164,12 +168,10 @@ class _CustomisePageState extends State<CustomisePage> {
                 )
               ),
               Text('Connection Status: $connectionStatus'),
-              Text('Message from server:'),
-              Text(message, style: TextStyle(fontSize: 20)),
               ElevatedButton(
                 onPressed: () {
                   // Send a test message to the server.
-                  socket.emit('message', 'start');
+                  socket.emit('start', 'message');
                 },
                 child: Text('Start simulation'),
               ),

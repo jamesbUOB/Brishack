@@ -13,6 +13,7 @@ WINDOW_HEIGHT = 800
 TILE_SIZE = 10
 WINDOW_TITLE = "Ecosystem Simulation"
 MOVEMENT_SPEED = 0.2
+FOX_HIT = False
 fox_numbers = []
 food_available = []
 
@@ -97,8 +98,8 @@ class GameView(arcade.Window):
                 rd.center_x = road_centre
                 self.urban.append(rd)
                 road_y += 76
-                
-            car = humans.Car(road_centre + 22.5,100,WINDOW_WIDTH,WINDOW_HEIGHT,"resources/YellowBuggy.png", self.sprites)
+            
+            car = humans.Car(road_centre + 22.5,0,WINDOW_WIDTH,WINDOW_HEIGHT,"resources/YellowBuggy.png", self.sprites)
             self.cars.append(car)
 
             self.road_start_x = road_centre - rd.width/2 - 20
@@ -200,6 +201,15 @@ class GameView(arcade.Window):
             self.mist.update()
         
         if road_mode:
+            hit_list = arcade.check_for_collision_with_list(self.cars[0], self.sprites)
+            for sprite in hit_list:
+                if type(sprite) == arcade.SpriteSolidColor:
+                    pass
+                elif sprite.type == "fox":
+                    sprite.kill_fox()
+                elif sprite.type == "rat":
+                    self.sprites.remove(sprite)
+
             self.cars[0].update()
 
         animals.plants.update_bushes(self.plants)

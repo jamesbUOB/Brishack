@@ -19,8 +19,6 @@ def spawn_waste(sprites, grid):
         waste.center_x = random.uniform(10, 790)
         waste.center_y = random.uniform(10, 790)
 
-
-
 class Road(arcade.Sprite):
     def __init__(self, image, sprites, scale=0.1):
         super().__init__(image, scale)
@@ -43,7 +41,7 @@ class Car(arcade.Sprite):
         self.center_y += self.speed
         
         if self.center_y > self.screen_height + self.player_sprite.height:
-            self.center_y = - (self.player_sprite.height/2) - 20 
+            self.center_y = - (self.player_sprite.height/2) - random.randint(20,400) 
         
         elif self.center_y < - (self.player_sprite.height):
-            self.center_y = self.screen_height + (self.player_sprite.height/2) + 20
+            self.center_y = self.screen_height + (self.player_sprite.height/2) +random.randint(20,400)

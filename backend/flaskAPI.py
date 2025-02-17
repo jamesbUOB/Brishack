@@ -42,16 +42,12 @@ def handle_connect():
 def handle_message(start):
     print(f"Received message: {start}")
 
-    socketio.emit('update', "window opened")
     # flutter passes in parameters for starting condition
 
     parameters = json.dumps(start)
 
     subprocess.Popen(["python", "simulation.py", parameters])
     
-
-        
-        
 
 
 if __name__ == '__main__':

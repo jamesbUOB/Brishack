@@ -1,9 +1,14 @@
 import 'package:app/screens/home.dart';
 import 'package:flutter/material.dart';
 
-class ReflectionsPage extends StatelessWidget {
-  const ReflectionsPage({super.key});
+class ReflectionPage extends StatefulWidget {
+  const ReflectionPage({super.key});
 
+  @override
+  State<ReflectionPage> createState() => _ReflectionPageState();
+}
+
+class _ReflectionPageState extends State<ReflectionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,3 +155,4 @@ class ReflectionsPage extends StatelessWidget {
     );
   }
 }
+

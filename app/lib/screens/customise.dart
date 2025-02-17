@@ -335,7 +335,7 @@ class _CustomisePageState extends State<CustomisePage> {
                         animation: true,
                         percent: foxScore,
                         center: Text(
-                          "${(foxScore * 100).toStringAsFixed(1)}%/${(foodScore * 100).toStringAsFixed(1)}%",
+                          "${(foxScore * 100).toStringAsFixed(1)}% Foxes",
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 20.0),
                         ),

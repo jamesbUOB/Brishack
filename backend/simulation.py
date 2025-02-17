@@ -88,7 +88,8 @@ class GameView(arcade.Window):
         self.cars = arcade.SpriteList()
         self.world_tiles = None
         self.road_coords = [-100, -100]
-
+        self.speed = 5
+        
         if road_mode:
             road_y = 0
             road_centre = random.uniform(100,700) 
@@ -98,9 +99,18 @@ class GameView(arcade.Window):
                 rd.center_x = road_centre
                 self.urban.append(rd)
                 road_y += 76
-            
-            car = humans.Car(road_centre + 22.5,0,WINDOW_WIDTH,WINDOW_HEIGHT,"resources/YellowBuggy.png", self.sprites)
-            self.cars.append(car)
+
+            start_y = 0
+            start_x = road_centre + 22.5
+            car1 = humans.Car(start_x,start_y,WINDOW_WIDTH,WINDOW_HEIGHT,"resources/YellowBuggy.png", self.sprites,5)
+
+            start_y_2 = 1200
+            start_x_2 = road_centre - 22.5
+            car2 = humans.Car(start_x_2,start_y_2,WINDOW_WIDTH,WINDOW_HEIGHT,"resources/YellowBuggy.png", self.sprites,-5)
+            car2.angle = 180
+
+            self.cars.append(car1)
+            self.cars.append(car2)
 
             self.road_start_x = road_centre - rd.width/2 - 20
             self.road_start_y = road_centre + rd.width/2 + 20
@@ -209,16 +219,18 @@ class GameView(arcade.Window):
             self.mist.update()
         
         if road_mode:
-            hit_list = arcade.check_for_collision_with_list(self.cars[0], self.sprites)
-            for sprite in hit_list:
-                if type(sprite) == arcade.SpriteSolidColor:
-                    pass
-                elif sprite.type == "fox":
-                    sprite.kill_fox()
-                elif sprite.type == "rat":
-                    self.sprites.remove(sprite)
+            for c in self.cars:
+                hit_list = arcade.check_for_collision_with_list(c, self.sprites)
+                for sprite in hit_list:
+                    if type(sprite) == arcade.SpriteSolidColor:
+                        pass
+                    elif sprite.type == "fox":
+                        sprite.kill_fox()
+                    elif sprite.type == "rat":
+                        self.sprites.remove(sprite)
 
             self.cars[0].update()
+            self.cars[1].update()
 
         animals.plants.update_bushes(self.plants)
         animals.fox_death(self.sprites)

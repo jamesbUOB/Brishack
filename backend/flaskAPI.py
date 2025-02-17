@@ -19,7 +19,6 @@ def add_cors_headers(response):
 
 @app.route('/end', methods=['POST'])
 def send_data():
-    print("here")
     data = request.get_json()
 
     socketio.emit('update', data)

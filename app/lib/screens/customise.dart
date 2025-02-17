@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'package:app/screens/reflection.dart';
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class CustomisePage extends StatefulWidget {
@@ -14,6 +16,8 @@ class _CustomisePageState extends State<CustomisePage> {
   late IO.Socket socket;
   String connectionStatus = 'Disconnected';
   String message = '';
+  double foxScore = 0;
+  double foodScore = 0;
 
   @override
   void initState() {
@@ -32,14 +36,39 @@ class _CustomisePageState extends State<CustomisePage> {
       print('Connected: ${socket.id}');
     });
 
-    socket.on('update', (data) {
+    // socket.on('update', (data) {
+    //   setState(() {
+    //     message = data.toString();
+    //     // printing this will give you a long list of data once the simulation ends
+    //     // simulation length is set to 60 seconds
+    //     //print(message);
+      
+    //   });
+    //   print('Update event: $data');
+    // });
+        socket.on('update', (data) {
       setState(() {
-        message = data.toString();
-        // printing this will give you a long list of data once the simulation ends
-        // simulation length is set to 60 seconds
-        //print(message);
-      });
-      print('Update event: $data');
+        // data to string
+        String data_str = data.toString();        
+        // wrap keys in quotes
+        String validJson = data_str.replaceAllMapped(
+          RegExp(r'(\w+):'),
+          (Match m) => '"${m[1]}":'
+        );
+
+        Map<String, dynamic> decoded = jsonDecode(validJson);
+
+        // lists
+        List<int> foxNumbers = List<int>.from(decoded["fox_numbers"]);
+        List<int> foodNumbers = List<int>.from(decoded["food_numbers"]);
+
+        print("Fox Numbers: $foxNumbers");
+        print("Food Numbers: $foodNumbers");
+
+        var foxNum = foxNumbers.reduce((a, b) => a + b) / foxNumbers.length.toDouble();
+        var foodNum = foodNumbers.reduce((a, b) => a + b) / foodNumbers.length.toDouble();
+        foxScore = foxNum/(foxNum + foodNum);
+          });
     });
 
     socket.on('disconnect', (_) {
@@ -280,6 +309,47 @@ class _CustomisePageState extends State<CustomisePage> {
                         ),
                       ],
                     ),
+                  ),
+                ),
+              ),
+            ),
+           SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Container(
+                  height: 500,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(color: Colors.black26, blurRadius: 4)
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularPercentIndicator(
+                        radius: 150.0,
+                        lineWidth: 30.0,
+                        animation: true,
+                        percent: foxScore,
+                        center: Text(
+                          "${(foxScore * 100).toStringAsFixed(1)}%/${(foodScore * 100).toStringAsFixed(1)}%",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20.0),
+                        ),
+                        footer: const Text(
+                          "Mean of Fox Population Over Food Population",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 17.0),
+                        ),
+                        circularStrokeCap: CircularStrokeCap.round,
+                        progressColor: Colors.red,
+                        backgroundColor: Colors.green,
+                            ),
+                            //  const SizedBox(height: 100),
+                    ],
                   ),
                 ),
               ),

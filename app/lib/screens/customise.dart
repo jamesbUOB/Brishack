@@ -55,6 +55,9 @@ class _CustomisePageState extends State<CustomisePage> {
         print("Fox Numbers: $foxNumbers");
         print("Food Numbers: $foodNumbers");
 
+        var foxNum = foxNumbers.reduce((a, b) => a + b) / foxNumbers.length.toDouble();
+        var foodNum = foodNumbers.reduce((a, b) => a + b) / foodNumbers.length.toDouble();
+        foxScore = foxNum/(foxNum + foodNum);
           });
     });
 

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -34,15 +36,39 @@ class _CustomisePageState extends State<CustomisePage> {
       print('Connected: ${socket.id}');
     });
 
-    socket.on('update', (data) {
-      setState(() {
-        message = data.toString();
-        // printing this will give you a long list of data once the simulation ends
-        // simulation length is set to 60 seconds
-        //print(message);
+    // socket.on('update', (data) {
+    //   setState(() {
+    //     message = data.toString();
+    //     // printing this will give you a long list of data once the simulation ends
+    //     // simulation length is set to 60 seconds
+    //     //print(message);
       
-      });
-      print('Update event: $data');
+    //   });
+    //   print('Update event: $data');
+    // });
+        socket.on('update', (data) {
+      setState(() {
+        // data to string
+        String data_str = data.toString();        
+        // wrap keys in quotes
+        String validJson = data_str.replaceAllMapped(
+          RegExp(r'(\w+):'),
+          (Match m) => '"${m[1]}":'
+        );
+
+        Map<String, dynamic> decoded = jsonDecode(validJson);
+
+        // lists
+        List<int> foxNumbers = List<int>.from(decoded["fox_numbers"]);
+        List<int> foodNumbers = List<int>.from(decoded["food_numbers"]);
+
+        print("Fox Numbers: $foxNumbers");
+        print("Food Numbers: $foodNumbers");
+
+        var foxNum = foxNumbers.reduce((a, b) => a + b) / foxNumbers.length.toDouble();
+        var foodNum = foodNumbers.reduce((a, b) => a + b) / foodNumbers.length.toDouble();
+        foxScore = foxNum/(foxNum + foodNum);
+          });
     });
 
     socket.on('disconnect', (_) {

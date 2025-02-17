@@ -112,6 +112,7 @@ class GameView(arcade.Window):
             self.cars.append(car1)
             self.cars.append(car2)
 
+
             self.road_start_x = road_centre - rd.width/2 - 20
             self.road_start_y = road_centre + rd.width/2 + 20
             self.road_coords = [self.road_start_x, self.road_start_y]
@@ -185,6 +186,7 @@ class GameView(arcade.Window):
         self.terrain_list.draw(pixelated = True)
         self.plants.draw()
         self.urban.draw()
+
         self.cars.draw()
         self.sprites.draw()
         if mist_mode:
@@ -231,6 +233,7 @@ class GameView(arcade.Window):
 
             self.cars[0].update()
             self.cars[1].update()
+
 
         animals.plants.update_bushes(self.plants)
         animals.fox_death(self.sprites)

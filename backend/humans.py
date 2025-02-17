@@ -18,11 +18,12 @@ def spawn_waste(sprites, grid):
     while grid[int(waste.center_y//10)][int(waste.center_x//10)] < -0.15:
         waste.center_x = random.uniform(10, 790)
         waste.center_y = random.uniform(10, 790)
-
+        
 class Road(arcade.Sprite):
     def __init__(self, image, sprites, scale=0.1):
         super().__init__(image, scale)
         self.player_texture = arcade.load_texture("resources/road.png")
+
         self.player_sprite = arcade.Sprite(self.player_texture)
 
 class Car(arcade.Sprite):

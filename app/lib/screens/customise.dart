@@ -1,3 +1,4 @@
+import 'package:app/screens/reflection.dart';
 import 'dart:convert';
 import 'package:app/screens/reflection.dart';
 import 'package:flutter/material.dart';
@@ -131,7 +132,6 @@ class _CustomisePageState extends State<CustomisePage> {
                 ),
               ),
             ),
-
 
             SliverToBoxAdapter(
               child: Padding(
@@ -366,42 +366,38 @@ class _CustomisePageState extends State<CustomisePage> {
                         Navigator.pop(context);
                       },
                       icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      label: const Text('Back',
-                          style: TextStyle(color: Colors.white)),
+                      label: const Text('Back', style: TextStyle(color: Colors.white)),
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            const Color.fromARGB(255, 13, 87, 15)),
+                        backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 13, 87, 15)),
                       ),
                     ),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => ReflectionPage()),
+                          MaterialPageRoute(builder: (context) => ReflectionsPage()),
                         );
                       },
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            const Color.fromARGB(255, 13, 87, 15)),
+                        backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 13, 87, 15)),
                       ),
                       child: Row(
                         children: const [
                           Text('Next', style: TextStyle(color: Colors.white)),
-                          SizedBox(
-                              width:
-                                  5), // Add some space between the text and the icon
+                          SizedBox(width: 5), // Add some space between the text and the icon
                           Icon(Icons.arrow_forward, color: Colors.white),
                         ],
                       ),
-                    ),
+                           ),
                   ],
                 ),
-              ),
+                   ),
             ),
-          ],
+               ],
         ),
-      ),
+            ),
     );
-  }
+
 }
+}
+

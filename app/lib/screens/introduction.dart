@@ -97,7 +97,7 @@ SliverToBoxAdapter(
                       const Icon(Icons.pets, size: 24, color: Colors.orange), // Fox Icon
                       const SizedBox(width: 10),
                       const Text(
-                        "Foxes in the City - Adaptive Survivors",
+                        "Foxes - The Adaptive Survivors",
                         style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                       ),
                     ],

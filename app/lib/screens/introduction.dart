@@ -1,15 +1,49 @@
 import 'package:flutter/material.dart';
 import 'customise.dart';
 
-
 class Introduction extends StatefulWidget {
-  const Introduction({Key? key}) : super(key: key); // Added constructor
+  const Introduction({Key? key}) : super(key: key);
 
   @override
   _IntroductionState createState() => _IntroductionState();
 }
 
 class _IntroductionState extends State<Introduction> {
+  int _currentFoxIndex = 0;
+  int _currentRatIndex = 0;
+  final PageController _foxController = PageController();
+  final PageController _ratController = PageController();
+
+  final List<Map<String, String>> foxFacts = [
+    {
+      "title": "🚦 Foxes Know When to Cross!",
+      "description": "Urban foxes in Bristol wait for quieter moments to cross roads—almost as if they understand pedestrian behavior!"
+    },
+    {
+      "title": "🍟 Foxes Love Late-Night Takeaways!",
+      "description": "Fast-food waste from student areas has changed their diet, making them rely on human scraps."
+    },
+    {
+      "title": "🗑️ Foxes Eat What We Throw Away",
+      "description": "Studies show urban foxes eat up to 60% human food waste, which affects their survival skills."
+    },
+  ];
+
+  final List<Map<String, String>> ratFacts = [
+    {
+      "title": "🐀 Bristol’s Bold Rats",
+      "description": "With fewer natural predators, rats are becoming more fearless, even scavenging in well-lit areas."
+    },
+    {
+      "title": "🗑️ Rats Are Nature’s Clean-Up Crew",
+      "description": "Often seen as pests, they actually help break down organic waste, playing an important role in the city’s ecosystem."
+    },
+    {
+      "title": "🕒 Rats Follow Your Routine!",
+      "description": "Bristol’s urban rats are so smart they raid bins right after people throw out food!"
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,54 +60,101 @@ class _IntroductionState extends State<Introduction> {
             ],
           ),
         ),
-        child: CustomScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // **Page Title & Fun Intro**
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    "🌍 Bristol’s Urban Wildlife: Fun Facts!",
+                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "Did you know that Bristol’s wildlife is always adapting to the human world?\n\n"
+                    "From foxes dodging traffic like pros to rats mastering the city’s waste system, "
+                    "discover how these clever animals thrive in our urban jungle! 🔍",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.white70),
+                  ),
+                ],
+              ),
+            ),
 
+            // **Foxes Fact Section**
+            _buildFactCard("Foxes - The Adaptive Survivors", "assets/images/fox.jpg", foxFacts, _foxController, _currentFoxIndex, (index) {
+              setState(() {
+                _currentFoxIndex = index;
+              });
+            }),
 
-          slivers: [
-  // Introduction Section
-  SliverToBoxAdapter(
-  child: Padding(
-    padding: const EdgeInsets.all(20.0),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Title
-        const Text(
-          "🌍 Bristol’s Urban Wildlife",
-          style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            // **Rats Fact Section**
+            _buildFactCard("Rats - The Hidden Navigators", "assets/images/rat.webp", ratFacts, _ratController, _currentRatIndex, (index) {
+              setState(() {
+                _currentRatIndex = index;
+              });
+            }),
+
+            // **Navigation Buttons (Back & Next)**
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    label: const Text('Back', style: TextStyle(color: Colors.white)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 13, 87, 15),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CustomisePage()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 13, 87, 15),
+                    ),
+                    child: Row(
+                      children: const [
+                        Text('Next', style: TextStyle(color: Colors.white)),
+                        SizedBox(width: 5),
+                        Icon(Icons.arrow_forward, color: Colors.white),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-        const SizedBox(height: 10),
+      ),
+    );
+  }
 
-        // Image
-        /*ClipRRect(
-          borderRadius: BorderRadius.circular(15),
-          child: Image.asset(
-            'assets/images/bristol_wildlife.jpg', // Add a relevant image
-            width: double.infinity,
-            height: 200,
-            fit: BoxFit.cover,
-          ),
-        ),*/
-        const SizedBox(height: 15),
-
-        // Introduction Text
-        const Text(
-          "Bristol is alive with movement - foxes searching for food under the glow of streetlights, "
-          "rats navigating the city's hidden tunnels, and humans shaping their world without realising it.\n\n"
-          "How do your choices change this delicate balance?",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.black87),
-        ),
-      ],
-    ),
-  ),
-),
-
-
-  // Foxes Section
-SliverToBoxAdapter(
-  child: Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+ // **Fact Card with Swiping & 'Next' + 'Back' Arrows**
+// **Fact Card with Improved Text Alignment & Styling**
+Widget _buildFactCard(
+  String title,
+  String imagePath,
+  List<Map<String, String>> facts,
+  PageController controller,
+  int currentIndex,
+  Function(int) onPageChanged,
+) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
     child: Container(
+      height: 220, // Increased height slightly for better spacing
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -81,195 +162,106 @@ SliverToBoxAdapter(
       ),
       padding: const EdgeInsets.all(20),
 
-      child: Row( // Row to align text on left & image on right
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
         children: [
-          // Text Column
+          // **Title**
+          Center(
+            child: Text(
+              title,
+              textAlign: TextAlign.center, // Center-align the title
+              style: const TextStyle(
+                fontSize: 22, // Increased font size
+                fontWeight: FontWeight.bold, // Makes it stand out more
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+
+          // **Fact Content with Swiping**
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Centered Title
-                Center(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.pets, size: 24, color: Colors.orange), // Fox Icon
-                      const SizedBox(width: 10),
-                      const Text(
-                        "Foxes in the City - Adaptive Survivors",
-                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-
-                // Facts List
-                factItem("🚦 Bristol's Foxes Are Becoming 'Street Smart'",
-                    "Urban foxes have learned to navigate traffic, waiting for quieter moments to cross roads."),
-                factItem("🍟 Bristol’s Foxes Rely on Late-Night Takeaways!",
-                    "Food waste from student areas has influenced their diet, making them rely more on urban scraps."),
-                factItem("🗑️ Foxes change their diet based on human waste!",
-                    "Urban foxes eat up to 60% human food waste, affecting their long-term health and survival skills."),
-              ],
-            ),
-          ),
-
-          // Image (Fox Urban)
-          SizedBox(width: 20), // Space between text & image
-          ClipRRect(
-            borderRadius: BorderRadius.circular(15), // Rounded edges for image
-            child: Image.asset(
-              'assets/images/fox.jpg',
-              width: 300, 
-              height: 300,
-              fit: BoxFit.cover, // Ensure the image fills the space well
-            ),
-          ),
-        ],
-      ),
-    ),
-  ),
-),
-
-
-
-  // Rats Section
-SliverToBoxAdapter(
-  child: Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-    child: Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4)], // Subtle shadow for depth
-      ),
-      padding: const EdgeInsets.all(20),
-      
-      child: Row( // Aligns image on the left & text on the right
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Image (Rat Urban)
-          ClipRRect(
-            borderRadius: BorderRadius.circular(15), // Rounded edges for image
-            child: Image.asset(
-              'assets/images/rat.webp',
-              width: 300, // Adjust size as needed
-              height: 300,
-              fit: BoxFit.cover, // Ensures image fills the space properly
-            ),
-          ),
-          const SizedBox(width: 20), // Space between image & text
-
-          // Text Column
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Centered Title
-                Center(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.directions_walk, size: 24, color: Colors.brown), // Rat Icon
-                      const SizedBox(width: 10),
-                      const Text(
-                        "Rats - The Hidden Navigators",
-                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-
-                // Facts List
-                factItem("🐀 Bristol’s Rats Are Getting Bolder",
-                    "With reduced natural predators, urban rats have become more fearless, scavenging even in well-lit areas."),
-                factItem("🗑️ Rats Play a Role in the City’s Waste System",
-                    "While often seen as pests, they help break down organic waste, playing an unofficial role in Bristol’s ecosystem."),
-                factItem("🕒 Rats Are Learning from Humans!",
-                    "Studies show urban rats in Bristol adapt to human routines, raiding bins right after waste collection."),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ),
-  ),
-),
- SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: PageView.builder(
+              controller: controller,
+              itemCount: facts.length,
+              onPageChanged: onPageChanged,
+              itemBuilder: (context, index) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center, // Center-align content vertically
                   children: [
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      label: const Text('Back', style: TextStyle(color: Colors.white)),
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 13, 87, 15)),
+                    Text(
+                      facts[index]["title"]!,
+                      textAlign: TextAlign.center, // Center-align text
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const CustomisePage()),
-                        );
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 13, 87, 15)),
+                    const SizedBox(height: 5),
+                    Text(
+                      facts[index]["description"]!,
+                      textAlign: TextAlign.center, // Center-align description
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.black87,
                       ),
-                      child: Row(
-                        children: const [
-                          Text('Next', style: TextStyle(color: Colors.white)),
-                          SizedBox(width: 5), // Add some space between the text and the icon
-                          Icon(Icons.arrow_forward, color: Colors.white),
-],),
                     ),
                   ],
-                ),
-              ),
+                );
+              },
             ),
-          ],
-      )));
+          ),
 
-        
-                  
-                  /**SliverToBoxAdapter(
-              child: Center( // Wrap button in Center for better layout
-                child: ElevatedButton(
-                  onPressed: () {
-                    socket.emit('message', 'start');
-                  },
+          const SizedBox(height: 10),
 
-                  child: const Text('Start simulation'),
+          // **Navigation Arrows & Page Indicator**
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // **Back Arrow**
+              IconButton(
+                icon: const Icon(Icons.arrow_back_ios, color: Colors.black54, size: 24),
+                onPressed: () {
+                  if (currentIndex > 0) {
+                    controller.previousPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeIn,
+                    );
+                  }
+                },
+              ),
+
+              // **Page Indicator (3 Dots)**
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  facts.length,
+                  (index) => Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    width: 10,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: currentIndex == index ? Colors.green : Colors.grey,
+                    ),
+                  ),
                 ),
               ),
-            ),**/
 
-  }
-
-  Widget factItem(String title, String description) {
-  return Padding(
-    padding: const EdgeInsets.only(bottom: 10.0),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "🔹 $title",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 5),
-        Text(
-          description,
-          style: TextStyle(fontSize: 16, color: Colors.black87),
-        ),
-      ],
+              // **Next Arrow**
+              IconButton(
+                icon: const Icon(Icons.arrow_forward_ios, color: Colors.black54, size: 24),
+                onPressed: () {
+                  if (currentIndex < facts.length - 1) {
+                    controller.nextPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeIn,
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
     ),
   );
 }

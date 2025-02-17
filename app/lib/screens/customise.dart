@@ -1,6 +1,7 @@
 import 'package:app/screens/reflection.dart';
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+
 class CustomisePage extends StatefulWidget {
   const CustomisePage({super.key});
 
@@ -104,34 +105,35 @@ class _CustomisePageState extends State<CustomisePage> {
             ),
 
 
-             SliverToBoxAdapter(
+        // **Land Pollution Toggle (Vertical Layout)**
+  SliverToBoxAdapter(
     child: Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4)],
-        ),
-        padding: const EdgeInsets.all(20),
-       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // **Text Section**
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text(
-                "🗑️ Land Pollution",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 5),
-              Text(
-                "Increase or decrease waste levels. More waste may attract scavengers, while cleaner streets could improve urban habitats.",
-                style: TextStyle(fontSize: 14, color: Colors.black87),
-              ),
-            ],
-          ),
+  color: Colors.white,
+  borderRadius: BorderRadius.circular(15), // Smaller rounded corners
+  boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 3)], // Softer shadow
+),
+padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12), // Less padding
+child: Column(
+  mainAxisSize: MainAxisSize.min, // Makes the box only as tall as needed
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    const Icon(Icons.delete_outline, size: 28, color: Colors.grey), // Slightly smaller icon
+    const SizedBox(height: 8), // Reduced spacing
+    const Text(
+      "Land Pollution",
+      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      textAlign: TextAlign.center,
+    ),
+    const SizedBox(height: 5), // Reduced spacing
+    const Text(
+      "Increase or decrease waste levels.",
+      style: TextStyle(fontSize: 13, color: Colors.black87),
+      textAlign: TextAlign.center,
+    ),
+    const SizedBox(height: 10), 
         Switch(value: choices[0], onChanged:(bool value) {
         setState(() {
         choices[0] = value; // Update the state when toggled
@@ -140,35 +142,35 @@ class _CustomisePageState extends State<CustomisePage> {
         ],),
         ),),),
 
-         SliverToBoxAdapter(
-  child: Padding(
-    padding: const EdgeInsets.all(20.0),
-    child: Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4)], // Subtle shadow for depth
-      ),
-      padding: const EdgeInsets.all(20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // **Text Section**
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text(
-                "🌫️ Air Pollution",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 5),
-              Text(
-                "Increase or decrease pollution levels. Cleaner air helps wildlife thrive, while higher pollution may challenge survival.",
-                style: TextStyle(fontSize: 14, color: Colors.black87),
-              ),
-            ],
-          ),
 
+        // **Air Pollution Toggle (Vertical Layout)**
+  SliverToBoxAdapter(
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+      child: Container(
+        decoration: BoxDecoration(
+  color: Colors.white,
+  borderRadius: BorderRadius.circular(15), // Slightly smaller corners
+  boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 3)], // Softer shadow
+),
+padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12), // Less padding
+child: Column(
+  mainAxisSize: MainAxisSize.min, // Makes the box only as tall as needed
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    const Icon(Icons.air, size: 28, color: Colors.blueGrey), // Slightly smaller icon
+    const SizedBox(height: 8), // Reduced spacing
+    const Text(
+      "Air Pollution",
+      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      textAlign: TextAlign.center,
+    ),
+    const SizedBox(height: 5), // Reduced spacing
+    const Text(
+      "Increase or decrease pollution levels.",
+      style: TextStyle(fontSize: 13, color: Colors.black87),
+      textAlign: TextAlign.center,
+    ),
         Switch(value: choices[1], onChanged:(bool value) {
         setState(() {
         choices[1] = value; // Update the state when toggled
@@ -177,34 +179,35 @@ class _CustomisePageState extends State<CustomisePage> {
         ],),
         ),),),
 
-          SliverToBoxAdapter(
-  child: Padding(
-    padding: const EdgeInsets.all(20.0),
-    child: Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4)], // Subtle shadow for depth
-      ),
-      padding: const EdgeInsets.all(20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // **Text Section**
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text(
-                "🏙️ Urbanisation",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 5),
-              Text(
-                "More buildings, more roads, more people… but how does this affect Bristol’s wildlife?",
-                style: TextStyle(fontSize: 14, color: Colors.black87),
-              ),
-            ],
-          ),
+    // **Urbanisation Toggle (Vertical Layout)**
+  SliverToBoxAdapter(
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+      child: Container(
+        decoration: BoxDecoration(
+  color: Colors.white,
+  borderRadius: BorderRadius.circular(15), // Consistent with other boxes
+  boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 3)], // Softer shadow
+),
+padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12), // Less padding
+child: Column(
+  mainAxisSize: MainAxisSize.min, // Keeps the box only as tall as needed
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    const Icon(Icons.location_city, size: 28, color: Colors.green), // Slightly smaller icon
+    const SizedBox(height: 8), // Reduced spacing
+    const Text(
+      "Urbanisation",
+      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      textAlign: TextAlign.center,
+    ),
+    const SizedBox(height: 5), // Reduced spacing
+    const Text(
+      "Increase or decrease buildings and roads.",
+      style: TextStyle(fontSize: 13, color: Colors.black87),
+      textAlign: TextAlign.center,
+    ),
+    const SizedBox(height: 10),
 
         Switch(value: choices[2], onChanged:(bool value) {
         setState(() {
@@ -217,8 +220,7 @@ class _CustomisePageState extends State<CustomisePage> {
     child: Padding(
       padding: const EdgeInsets.all(20.0),
       child: Container(
-        height: 200,
-      
+        height: 90,
         padding: const EdgeInsets.all(20),
         child: Center(child:
         Column(
@@ -227,7 +229,7 @@ class _CustomisePageState extends State<CustomisePage> {
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 40, vertical: 15),
+                          horizontal: 50, vertical: 20),
                       backgroundColor: const Color.fromARGB(255, 15, 114, 18),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),

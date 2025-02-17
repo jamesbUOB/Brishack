@@ -1,4 +1,4 @@
-/*import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
   class ScoreIndicator extends StatelessWidget {
   final String title;
@@ -50,4 +50,4 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
       ],
     );
   }
-  }*/
+  }

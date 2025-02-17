@@ -26,3 +26,24 @@ class Road(arcade.Sprite):
         super().__init__(image, scale)
         self.player_texture = arcade.load_texture("resources/road.png")
         self.player_sprite = arcade.Sprite(self.player_texture)
+
+class Car(arcade.Sprite):
+
+    def __init__(self, x,y,screen_width, screen_height, image, sprites, scale=1):
+        super().__init__(image,scale)
+        self.player_texture = arcade.load_texture("resources/YellowBuggy.png")
+        self.player_sprite = arcade.Sprite(self.player_texture)
+        self.center_x = x
+        self.center_y = y
+        self.screen_width = screen_width
+        self.screen_height = screen_height
+        self.speed = 5
+    
+    def update(self):
+        self.center_y += self.speed
+        
+        if self.center_y > self.screen_height + self.player_sprite.height:
+            self.center_y = - (self.player_sprite.height/2) - 20 
+        
+        elif self.center_y < - (self.player_sprite.height):
+            self.center_y = self.screen_height + (self.player_sprite.height/2) + 20

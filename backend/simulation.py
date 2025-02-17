@@ -84,6 +84,7 @@ class GameView(arcade.Window):
         self.sprites = arcade.SpriteList()
         self.plants = arcade.SpriteList()
         self.urban = arcade.SpriteList()
+        self.cars = arcade.SpriteList()
         self.world_tiles = None
         self.road_coords = [-100, -100]
 
@@ -96,6 +97,9 @@ class GameView(arcade.Window):
                 rd.center_x = road_centre
                 self.urban.append(rd)
                 road_y += 76
+                
+            car = humans.Car(road_centre + 22.5,100,WINDOW_WIDTH,WINDOW_HEIGHT,"resources/YellowBuggy.png", self.sprites)
+            self.cars.append(car)
 
             self.road_start_x = road_centre - rd.width/2 - 20
             self.road_start_y = road_centre + rd.width/2 + 20
@@ -171,6 +175,7 @@ class GameView(arcade.Window):
         self.terrain_list.draw(pixelated = True)
         self.plants.draw()
         self.urban.draw()
+        self.cars.draw()
         self.sprites.draw()
         if mist_mode:
             self.mist.draw()
@@ -193,6 +198,9 @@ class GameView(arcade.Window):
                     f.health_bar.update_colors(new_full_colour=arcade.color.GREEN)
         
             self.mist.update()
+        
+        if road_mode:
+            self.cars[0].update()
 
         animals.plants.update_bushes(self.plants)
         animals.fox_death(self.sprites)

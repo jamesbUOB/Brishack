@@ -3,7 +3,7 @@ import json
 import sys
 import arcade
 import requests
-import animals, humans
+import animals, humans, plants
 import time
 import arcade.draw
 from perlin import world_generation
@@ -114,7 +114,6 @@ class GameView(arcade.Window):
         for i in range(10):
             animals.plants.spawn_bush(self.plants, self.grid)
 
-
         # add waste to the map
         if waste_mode == True:
             for i in range(10):
@@ -197,7 +196,16 @@ class GameView(arcade.Window):
             for f in hit_list:
                     f.health -= 1
                     f.health_bar.update_colors(new_full_colour=arcade.color.GREEN)
-        
+
+            plant_hit_list = arcade.check_for_collision_with_list(self.mist,self.plants)
+            for p in plant_hit_list:
+                if p.type == "berrybush":
+                    bush = plants.EmptyBush(self.plants, "resources/emptybush.png", 2)
+                    bush.center_x = p.center_x
+                    bush.center_y = p.center_y
+                    p.kill()
+                    self.plants.append(bush)
+
             self.mist.update()
         
         if road_mode:

@@ -77,13 +77,12 @@ class _CustomisePageState extends State<CustomisePage> {
     socket.disconnect();
     super.dispose();
   }
- List<bool> choices = <bool>[ false,false,false ];
+
+  List<bool> choices = <bool>[false, false, false];
   @override
   Widget build(BuildContext context) {
-   
-
     return Scaffold(
-       body: Container(
+      body: Container(
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(
@@ -188,16 +187,51 @@ class _CustomisePageState extends State<CustomisePage> {
                   textAlign: TextAlign.center,
                 )
               ),
-              Text('Connection Status: $connectionStatus'),
-              ElevatedButton(
-                onPressed: () {
-                  // Send the parameters to the server
-                  var sent_data = {"waste": choices[0],
-                  "mist": choices[1], "urban": choices[2]};
+            ),
 
-                  socket.emit('start', sent_data);
-                },
-                child: Text('Start simulation'),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(color: Colors.black26, blurRadius: 4)
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // **Text Section**
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            "🗑️ Land Pollution",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            "Increase or decrease waste levels. More waste may attract scavengers, while cleaner streets could improve urban habitats.",
+                            style:
+                                TextStyle(fontSize: 14, color: Colors.black87),
+                          ),
+                        ],
+                      ),
+                      Switch(
+                        value: choices[0],
+                        onChanged: (bool value) {
+                          setState(() {
+                            choices[0] = value; // Update the state when toggled
+                          });
+                        },
+                      )
+                    ],
+                  ),
+                ),
               ),
                const SizedBox(height: 20),
                CircularPercentIndicator(
@@ -224,7 +258,142 @@ class _CustomisePageState extends State<CustomisePage> {
         ),),),
  SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                padding: const EdgeInsets.all(20.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(color: Colors.black26, blurRadius: 4)
+                    ], // Subtle shadow for depth
+                  ),
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // **Text Section**
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            "🌫️ Air Pollution",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            "Increase or decrease pollution levels. Cleaner air helps wildlife thrive, while higher pollution may challenge survival.",
+                            style:
+                                TextStyle(fontSize: 14, color: Colors.black87),
+                          ),
+                        ],
+                      ),
+
+                      Switch(
+                        value: choices[1],
+                        onChanged: (bool value) {
+                          setState(() {
+                            choices[1] = value; // Update the state when toggled
+                          });
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(color: Colors.black26, blurRadius: 4)
+                    ], // Subtle shadow for depth
+                  ),
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // **Text Section**
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            "🏙️ Urbanisation",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            "More buildings, more roads, more people… but how does this affect Bristol’s wildlife?",
+                            style:
+                                TextStyle(fontSize: 14, color: Colors.black87),
+                          ),
+                        ],
+                      ),
+
+                      Switch(
+                        value: choices[2],
+                        onChanged: (bool value) {
+                          setState(() {
+                            choices[2] = value; // Update the state when toggled
+                          });
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Container(
+                  height: 200,
+                  padding: const EdgeInsets.all(20),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 40, vertical: 15),
+                            backgroundColor:
+                                const Color.fromARGB(255, 15, 114, 18),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          onPressed: () {
+                            // Send the parameters to the server
+                            var sent_data = {
+                              "waste": choices[0],
+                              "mist": choices[1],
+                              "urban": choices[2]
+                            };
+
+                            socket.emit('start', sent_data);
+                          },
+                          child: const Text(
+                            '🚀 See Your Impact!',
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 20.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -233,37 +402,42 @@ class _CustomisePageState extends State<CustomisePage> {
                         Navigator.pop(context);
                       },
                       icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      label: const Text('Back', style: TextStyle(color: Colors.white)),
+                      label: const Text('Back',
+                          style: TextStyle(color: Colors.white)),
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 13, 87, 15)),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            const Color.fromARGB(255, 13, 87, 15)),
                       ),
                     ),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const CustomisePage()),
+                          MaterialPageRoute(
+                              builder: (context) => const CustomisePage()),
                         );
                       },
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 13, 87, 15)),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            const Color.fromARGB(255, 13, 87, 15)),
                       ),
                       child: Row(
                         children: const [
                           Text('Next', style: TextStyle(color: Colors.white)),
-                          SizedBox(width: 5), // Add some space between the text and the icon
+                          SizedBox(
+                              width:
+                                  5), // Add some space between the text and the icon
                           Icon(Icons.arrow_forward, color: Colors.white),
                         ],
                       ),
-                           ),
+                    ),
                   ],
                 ),
-                   ),
+              ),
             ),
-               ],
+          ],
         ),
-            ),
+      ),
     );
-
-}
+  }
 }

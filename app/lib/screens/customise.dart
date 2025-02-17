@@ -77,7 +77,7 @@ class _CustomisePageState extends State<CustomisePage> {
         ),
         child: CustomScrollView(
           slivers: [
-            // **Title & Introduction**
+ // **Title & Introduction**
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -101,6 +101,7 @@ class _CustomisePageState extends State<CustomisePage> {
                 ),
               ),
             ),
+
 
             SliverToBoxAdapter(
               child: Padding(
@@ -128,7 +129,7 @@ class _CustomisePageState extends State<CustomisePage> {
                           ),
                           SizedBox(height: 5),
                           Text(
-                            "Increase or decrease waste levels. More waste may attract scavengers, while cleaner streets could improve urban habitats.",
+                            "Increase or decrease waste levels.",
                             style:
                                 TextStyle(fontSize: 14, color: Colors.black87),
                           ),
@@ -174,7 +175,7 @@ class _CustomisePageState extends State<CustomisePage> {
                           ),
                           SizedBox(height: 5),
                           Text(
-                            "Increase or decrease pollution levels. Cleaner air helps wildlife thrive, while higher pollution may challenge survival.",
+                            "Increase or decrease pollution levels.",
                             style:
                                 TextStyle(fontSize: 14, color: Colors.black87),
                           ),
@@ -221,7 +222,7 @@ class _CustomisePageState extends State<CustomisePage> {
                           ),
                           SizedBox(height: 5),
                           Text(
-                            "More buildings, more roads, more people… but how does this affect Bristol’s wildlife?",
+                            "Increase buildings and roads.",
                             style:
                                 TextStyle(fontSize: 14, color: Colors.black87),
                           ),
@@ -245,7 +246,7 @@ class _CustomisePageState extends State<CustomisePage> {
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Container(
-                  height: 200,
+                  height: 150,
                   padding: const EdgeInsets.all(20),
                   child: Center(
                     child: Column(
@@ -254,7 +255,7 @@ class _CustomisePageState extends State<CustomisePage> {
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 40, vertical: 15),
+                                horizontal: 50, vertical: 30),
                             backgroundColor:
                                 const Color.fromARGB(255, 15, 114, 18),
                             shape: RoundedRectangleBorder(

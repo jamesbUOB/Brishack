@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class CustomisePage extends StatefulWidget {
@@ -13,6 +14,8 @@ class _CustomisePageState extends State<CustomisePage> {
   late IO.Socket socket;
   String connectionStatus = 'Disconnected';
   String message = '';
+  double foxScore = 0;
+  double foodScore = 0;
 
   @override
   void initState() {
@@ -37,6 +40,7 @@ class _CustomisePageState extends State<CustomisePage> {
         // printing this will give you a long list of data once the simulation ends
         // simulation length is set to 60 seconds
         //print(message);
+      
       });
       print('Update event: $data');
     });
@@ -278,6 +282,47 @@ class _CustomisePageState extends State<CustomisePage> {
                         ),
                       ],
                     ),
+                  ),
+                ),
+              ),
+            ),
+           SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Container(
+                  height: 500,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(color: Colors.black26, blurRadius: 4)
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularPercentIndicator(
+                        radius: 150.0,
+                        lineWidth: 30.0,
+                        animation: true,
+                        percent: foxScore,
+                        center: Text(
+                          "${(foxScore * 100).toStringAsFixed(1)}%/${(foodScore * 100).toStringAsFixed(1)}%",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20.0),
+                        ),
+                        footer: const Text(
+                          "Mean of Fox Population Over Food Population",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 17.0),
+                        ),
+                        circularStrokeCap: CircularStrokeCap.round,
+                        progressColor: Colors.red,
+                        backgroundColor: Colors.green,
+                            ),
+                            //  const SizedBox(height: 100),
+                    ],
                   ),
                 ),
               ),

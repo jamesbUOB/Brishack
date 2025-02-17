@@ -238,6 +238,20 @@ class _HomePageState extends State<HomePage> {
              ),
 
 
+            // **Animated Arrow (Bouncing)**
+           /* SliverToBoxAdapter(
+              child: Center(
+                child: SlideTransition(
+                  position: ,
+                  child: const Icon(
+                    Icons.arrow_downward,
+                    size: 30,
+                    color: Colors.black54,
+                  ),
+                ),
+              ),
+            ),*/
+
             // Button at the Bottom
             SliverToBoxAdapter(
               child: Center(

@@ -71,113 +71,95 @@ class _CustomisePageState extends State<CustomisePage> {
             ],
           ),
         ),
+    
         child: CustomScrollView(
           slivers: [
-             SliverToBoxAdapter(
-    child: Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Container(
-        height: 200,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [ 
-          const Text(
-          "Land Pollution",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-        ),
-        Switch(value: choices[0], onChanged:(bool value) {
-        setState(() {
-        choices[0] = value; // Update the state when toggled
-        });
-        },)
-        ],),
-        ),),),
-          SliverToBoxAdapter(
-    child: Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Container(
-        height: 200,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [ 
-          const Text(
-          "Air Pollution",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-        ),
-        Switch(value: choices[1], onChanged:(bool value) {
-        setState(() {
-        choices[1] = value; // Update the state when toggled
-        });
-        },)
-        ],),
-        ),),),
-          SliverToBoxAdapter(
-    child: Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Container(
-        height: 200,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [ 
-          const Text(
-          "Urbanisation",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-        ),
-        Switch(value: choices[2], onChanged:(bool value) {
-        setState(() {
-        choices[2] = value; // Update the state when toggled
-        });
-        },)
-        ],),
-        ),),),
-          SliverToBoxAdapter(
-    child: Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Container(
-        height: 200,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        padding: const EdgeInsets.all(20),
-        child: Center(child:
-        Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                child: Text(
-                  "Customise your ecosystem simulation",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                  textAlign: TextAlign.center,
-                )
+            // **Title & Introduction**
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "🌍 Shape Bristol’s Urban Wild: Your Choice Matter",
+                      style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      "Adjust the conditions of the city and discover how it might affect its wild inhabitants. Will you create a thriving environment, or will unexpected challenges arise?",
+                      style: TextStyle(fontSize: 16, color: Colors.white70),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
               ),
-              Text('Connection Status: $connectionStatus'),
-              Text('Message from server:'),
-              Text(message, style: TextStyle(fontSize: 20)),
-              ElevatedButton(
-                onPressed: () {
-                  // Send a test message to the server.
-                  socket.emit('message', 'start');
-                },
-                child: Text('Start simulation'),
+            ),
+
+            // **Land Pollution Customization**
+            buildToggleCard(
+              "Land Pollution 🗑️",
+              "Increase waste levels in the city. Uncover the costs ...",
+              choices[0],
+              (bool value) {
+                setState(() {
+                  choices[0] = value;
+                });
+              },
+            ),
+
+            // **Air Pollution Customization**
+            buildToggleCard(
+              "Air Pollution 🌫️",
+              "The city air changes every day. Will it remain fresh, or will it challenge those who breathe it?",
+              choices[1],
+              (bool value) {
+                setState(() {
+                  choices[1] = value;
+                });
+              },
+            ),
+
+            // **Urbanization Customization**
+            buildToggleCard(
+              "Urbanisation 🏙️",
+              "More roads, more buildings, more people... but what about those who already call this place home?",
+              choices[2],
+              (bool value) {
+                setState(() {
+                  choices[2] = value;
+                });
+              },
+            ),
+
+            // **Simulation Start Button**
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Center(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                      backgroundColor: const Color.fromARGB(255, 15, 114, 18),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () {
+                      // Send a test message to the server
+                      socket.emit('message', 'start');
+                    },
+                    child: const Text(
+                      '🚀 See Your Impact!',
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                  ),
+                ),
               ),
-            ],
-          ),
-        ),
-        ),),),
- SliverToBoxAdapter(
+            ),
+
+            // **Navigation Buttons (Back & Next)**
+            SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
                 child: Row(
@@ -210,15 +192,51 @@ class _CustomisePageState extends State<CustomisePage> {
                           Icon(Icons.arrow_forward, color: Colors.white),
                         ],
                       ),
-                           ),
+                    ),
                   ],
                 ),
-                   ),
+              ),
             ),
-               ],
+          ],
         ),
-            ),
+      ),
     );
+  }
 
-}
+  // **Reusable Widget for Customization Toggles**
+  Widget buildToggleCard(String title, String description, bool value, Function(bool) onChanged) {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4)], // Subtle shadow for depth
+          ),
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 5),
+              Text(
+                description,
+                style: const TextStyle(fontSize: 14, color: Colors.black87),
+              ),
+              const SizedBox(height: 10),
+              Switch(
+                value: value,
+                onChanged: onChanged,
+                activeColor: Colors.green,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

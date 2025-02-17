@@ -1,5 +1,8 @@
 import 'package:app/screens/home.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+
 
 class ReflectionsPage extends StatelessWidget {
   const ReflectionsPage({super.key});
@@ -48,7 +51,7 @@ class ReflectionsPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -59,12 +62,12 @@ class ReflectionsPage extends StatelessWidget {
               // **Final Thoughts & Real-World Impact**
               const Text(
                 "What Can You Do? 🚀",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
               ),
               const SizedBox(height: 10),
               const Text(
                 "Bristol’s wildlife constantly adapts to urban change. But every action we take plays a role in shaping the environment.",
-                style: TextStyle(fontSize: 16, color: Colors.white70),
+                style: TextStyle(fontSize: 16, color: Colors.black),
                 textAlign: TextAlign.start,
               ),
               const SizedBox(height: 15),
@@ -79,7 +82,7 @@ class ReflectionsPage extends StatelessWidget {
               // **Further Resources**
               const Text(
                 "Learn More 📚",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
               ),
               const SizedBox(height: 10),
               _resourceLink("Wildlife Trust Bristol", "https://www.avonwildlifetrust.org.uk/"),
@@ -92,7 +95,7 @@ class ReflectionsPage extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    backgroundColor: const Color.fromARGB(255, 34, 92, 36),
                     padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -108,7 +111,7 @@ class ReflectionsPage extends StatelessWidget {
                   },
                   child: const Text(
                     "Back to Home",
-                    style: TextStyle(fontSize: 16, color: Colors.black),
+                    style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
                 ),
               ),
@@ -127,11 +130,11 @@ class ReflectionsPage extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("• ", style: TextStyle(color: Colors.white, fontSize: 16)),
+          const Text("• ", style: TextStyle(color: Colors.black, fontSize: 16)),
           Expanded(
             child: Text(
               text,
-              style: const TextStyle(fontSize: 16, color: Colors.white70),
+              style: const TextStyle(fontSize: 16, color: Colors.black),
             ),
           ),
         ],
@@ -143,10 +146,14 @@ class ReflectionsPage extends StatelessWidget {
   static Widget _resourceLink(String title, String url) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
-      child: Text(
-        "$title: $url",
-        style: const TextStyle(fontSize: 14, color: Colors.lightBlueAccent, decoration: TextDecoration.underline),
+      child: InkWell(
+        child: Text("$title: $url",
+        style: const TextStyle(fontSize: 14, color: Colors.black, decoration: TextDecoration.underline),
       ),
-    );
+      onTap: () async{
+          final Uri uri = Uri.parse(url);
+          launchUrl(uri);
+      }
+    ));
   }
 }

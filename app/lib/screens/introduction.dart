@@ -265,3 +265,4 @@ Widget _buildFactCard(
     ),
   );
 }
+}

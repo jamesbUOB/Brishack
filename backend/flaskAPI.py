@@ -1,3 +1,4 @@
+import json
 from flask import Flask, request, jsonify, Response
 from flask_socketio import SocketIO, emit
 import simulation
@@ -15,12 +16,6 @@ def add_cors_headers(response):
     response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
     return response
 
-@app.route('/end')
-def get_data():
-    print("here2")
-    # method for getting data from the frontend
-
-    return "200"
 
 @app.route('/end', methods=['POST'])
 def send_data():
@@ -51,7 +46,9 @@ def handle_message(start):
     socketio.emit('update', "window opened")
     # flutter passes in parameters for starting condition
 
-    subprocess.Popen(["python", "simulation.py", "default"])
+    parameters = json.dumps(start)
+
+    subprocess.Popen(["python", "simulation.py", parameters])
     
 
         

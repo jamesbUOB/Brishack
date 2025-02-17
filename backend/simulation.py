@@ -15,9 +15,6 @@ WINDOW_TITLE = "Ecosystem Simulation"
 MOVEMENT_SPEED = 0.2
 fox_numbers = []
 food_available = []
-waste_mode = False
-road_mode = False
-mist_mode = False
 
 
 class Mist(arcade.Sprite):
@@ -188,13 +185,13 @@ class GameView(arcade.Window):
                 
                 if isinstance(sprite, animals.Fox):
                     self.foxs.append(sprite)
-            
-        hit_list = arcade.check_for_collision_with_list(self.mist,self.foxs)
-        for f in hit_list:
-                f.health -= 1
-                f.health_bar.update_colors(new_full_colour=arcade.color.GREEN)
         
         if mist_mode:
+            hit_list = arcade.check_for_collision_with_list(self.mist,self.foxs)
+            for f in hit_list:
+                    f.health -= 1
+                    f.health_bar.update_colors(new_full_colour=arcade.color.GREEN)
+        
             self.mist.update()
 
         animals.plants.update_bushes(self.plants)
@@ -234,14 +231,28 @@ class GameView(arcade.Window):
         food_available.append(food_num)
 
         if time.time() - self.fullsimstart >= 60:
-            self.close()
+            self.on_close()
 
 
 def main(parameters):
+   global waste_mode, mist_mode, road_mode
+   waste_mode = parameters.get('waste', False)
+   mist_mode = parameters.get('mist', False)
+   road_mode = parameters.get('urban', False)
+
    window = GameView()
    window.setup()
    arcade.run()
    sys.exit(0)
 
 if __name__ == "__main__":
-   main("default")
+    if len(sys.argv) > 1:
+        try:
+            parameters = json.loads(sys.argv[1])
+        except json.JSONDecodeError as e:
+            print("Failed to decode JSON:", e)
+            parameters = {}
+    else:
+        parameters = {}
+
+    main(parameters)

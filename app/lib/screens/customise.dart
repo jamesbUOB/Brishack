@@ -170,8 +170,11 @@ class _CustomisePageState extends State<CustomisePage> {
               Text('Connection Status: $connectionStatus'),
               ElevatedButton(
                 onPressed: () {
-                  // Send a test message to the server.
-                  socket.emit('start', 'message');
+                  // Send the parameters to the server
+                  var sent_data = {"waste": choices[0],
+                  "mist": choices[1], "urban": choices[2]};
+
+                  socket.emit('start', sent_data);
                 },
                 child: Text('Start simulation'),
               ),

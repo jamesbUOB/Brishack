@@ -1,4 +1,3 @@
-import 'package:app/screens/reflection.dart';
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -103,70 +102,186 @@ class _CustomisePageState extends State<CustomisePage> {
               ),
             ),
 
-            // **Land Pollution Customization**
-            buildToggleCard(
-              "Land Pollution 🗑️",
-              "Increase waste levels in the city. Uncover the costs ...",
-              choices[0],
-              (bool value) {
-                setState(() {
-                  choices[0] = value;
-                });
-              },
-            ),
-
-            // **Air Pollution Customization**
-            buildToggleCard(
-              "Air Pollution 🌫️",
-              "The city air changes every day. Will it remain fresh, or will it challenge those who breathe it?",
-              choices[1],
-              (bool value) {
-                setState(() {
-                  choices[1] = value;
-                });
-              },
-            ),
-
-            // **Urbanization Customization**
-            buildToggleCard(
-              "Urbanisation 🏙️",
-              "More roads, more buildings, more people... but what about those who already call this place home?",
-              choices[2],
-              (bool value) {
-                setState(() {
-                  choices[2] = value;
-                });
-              },
-            ),
-
-            // **Simulation Start Button**
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: Center(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 40, vertical: 15),
-                      backgroundColor: const Color.fromARGB(255, 15, 114, 18),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(color: Colors.black26, blurRadius: 4)
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // **Text Section**
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            "🗑️ Land Pollution",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            "Increase or decrease waste levels. More waste may attract scavengers, while cleaner streets could improve urban habitats.",
+                            style:
+                                TextStyle(fontSize: 14, color: Colors.black87),
+                          ),
+                        ],
                       ),
-                    ),
-                    onPressed: () {
-                      // Send a test message to the server
-                      socket.emit('message', 'start');
-                    },
-                    child: const Text(
-                      '🚀 See Your Impact!',
-                      style: TextStyle(fontSize: 18, color: Colors.white),
-                    ),
+                      Switch(
+                        value: choices[0],
+                        onChanged: (bool value) {
+                          setState(() {
+                            choices[0] = value; // Update the state when toggled
+                          });
+                        },
+                      )
+                    ],
                   ),
                 ),
               ),
             ),
 
-            // **Navigation Buttons (Back & Next)**
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(color: Colors.black26, blurRadius: 4)
+                    ], // Subtle shadow for depth
+                  ),
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // **Text Section**
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            "🌫️ Air Pollution",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            "Increase or decrease pollution levels. Cleaner air helps wildlife thrive, while higher pollution may challenge survival.",
+                            style:
+                                TextStyle(fontSize: 14, color: Colors.black87),
+                          ),
+                        ],
+                      ),
+
+                      Switch(
+                        value: choices[1],
+                        onChanged: (bool value) {
+                          setState(() {
+                            choices[1] = value; // Update the state when toggled
+                          });
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(color: Colors.black26, blurRadius: 4)
+                    ], // Subtle shadow for depth
+                  ),
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // **Text Section**
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            "🏙️ Urbanisation",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            "More buildings, more roads, more people… but how does this affect Bristol’s wildlife?",
+                            style:
+                                TextStyle(fontSize: 14, color: Colors.black87),
+                          ),
+                        ],
+                      ),
+
+                      Switch(
+                        value: choices[2],
+                        onChanged: (bool value) {
+                          setState(() {
+                            choices[2] = value; // Update the state when toggled
+                          });
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Container(
+                  height: 200,
+                  padding: const EdgeInsets.all(20),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 40, vertical: 15),
+                            backgroundColor:
+                                const Color.fromARGB(255, 15, 114, 18),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          onPressed: () {
+                            // Send the parameters to the server
+                            var sent_data = {
+                              "waste": choices[0],
+                              "mist": choices[1],
+                              "urban": choices[2]
+                            };
+
+                            socket.emit('start', sent_data);
+                          },
+                          child: const Text(
+                            '🚀 See Your Impact!',
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.symmetric(
@@ -191,7 +306,7 @@ class _CustomisePageState extends State<CustomisePage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const ReflectionPage()),
+                              builder: (context) => const CustomisePage()),
                         );
                       },
                       style: ButtonStyle(
@@ -213,47 +328,6 @@ class _CustomisePageState extends State<CustomisePage> {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  // **Reusable Widget for Customization Toggles**
-  Widget buildToggleCard(
-      String title, String description, bool value, Function(bool) onChanged) {
-    return SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(color: Colors.black26, blurRadius: 4)
-            ], // Subtle shadow for depth
-          ),
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 5),
-              Text(
-                description,
-                style: const TextStyle(fontSize: 14, color: Colors.black87),
-              ),
-              const SizedBox(height: 10),
-              Switch(
-                value: value,
-                onChanged: onChanged,
-                activeColor: Colors.green,
-              ),
-            ],
-          ),
         ),
       ),
     );

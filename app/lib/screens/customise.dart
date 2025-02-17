@@ -1,8 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'circular_percentage_indicator.dart';
 class CustomisePage extends StatefulWidget {
   const CustomisePage({super.key});
+  
 
   @override
   State<CustomisePage> createState() => _CustomisePageState();
@@ -13,7 +17,8 @@ class _CustomisePageState extends State<CustomisePage> {
   late IO.Socket socket;
   String connectionStatus = 'Disconnected';
   String message = '';
-
+  double foxScore = 0.0;
+  double foodScore = 0.0;
   @override
   void initState() {
     super.initState();
@@ -33,12 +38,27 @@ class _CustomisePageState extends State<CustomisePage> {
 
     socket.on('update', (data) {
       setState(() {
-        message = data.toString();
-        // printing this will give you a long list of data once the simulation ends
-        // simulation length is set to 60 seconds
-        //print(message);
-      });
-      print('Update event: $data');
+        // data to string
+        String data_str = data.toString();        
+        // wrap keys in quotes
+        String validJson = data_str.replaceAllMapped(
+          RegExp(r'(\w+):'),
+          (Match m) => '"${m[1]}":'
+        );
+  
+        Map<String, dynamic> decoded = jsonDecode(validJson);
+        
+        // lists
+        List<int> foxNumbers = List<int>.from(decoded["fox_numbers"]);
+        List<int> foodNumbers = List<int>.from(decoded["food_numbers"]);
+        
+        print("Fox Numbers: $foxNumbers");
+        print("Food Numbers: $foodNumbers");
+
+        var foxNum = foxNumbers.reduce((a, b) => a + b) / foxNumbers.length.toDouble();
+        var foodNum = foodNumbers.reduce((a, b) => a + b) / foodNumbers.length.toDouble();
+        foxScore = foxNum/(foxNum + foodNum);
+          });
     });
 
     socket.on('disconnect', (_) {
@@ -77,28 +97,95 @@ class _CustomisePageState extends State<CustomisePage> {
         ),
         child: CustomScrollView(
           slivers: [
-            // **Title & Introduction**
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "🌍 Shape Bristol’s Urban Wild: Your Choice Matter",
-                      style: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      "Adjust the conditions of the city and discover how it might affect its wild inhabitants. Will you create a thriving environment, or will unexpected challenges arise?",
-                      style: TextStyle(fontSize: 16, color: Colors.white70),
-                    ),
-                    const SizedBox(height: 20),
-                  ],
-                ),
+             SliverToBoxAdapter(
+    child: Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Container(
+        height: 200,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [ 
+          const Text(
+          "Land Pollution",
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+        ),
+        Switch(value: choices[0], onChanged:(bool value) {
+        setState(() {
+        choices[0] = value; // Update the state when toggled
+        });
+        },)
+        ],),
+        ),),),
+          SliverToBoxAdapter(
+    child: Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Container(
+        height: 200,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [ 
+          const Text(
+          "Air Pollution",
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+        ),
+        Switch(value: choices[1], onChanged:(bool value) {
+        setState(() {
+        choices[1] = value; // Update the state when toggled
+        });
+        },)
+        ],),
+        ),),),
+          SliverToBoxAdapter(
+    child: Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Container(
+        height: 200,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [ 
+          const Text(
+          "Urbanisation",
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+        ),
+        Switch(value: choices[2], onChanged:(bool value) {
+        setState(() {
+        choices[2] = value; // Update the state when toggled
+        });
+        },)
+        ],),
+        ),),),
+          SliverToBoxAdapter(
+    child: Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Container(
+        height: 500,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: const EdgeInsets.all(20),
+        child: Center(child:
+        Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                child: const
+                  Text( "Customise your ecosystem simulation",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  textAlign: TextAlign.center,
+                )
               ),
             ),
 
@@ -146,9 +233,30 @@ class _CustomisePageState extends State<CustomisePage> {
                   ),
                 ),
               ),
-            ),
+               const SizedBox(height: 20),
+               CircularPercentIndicator(
+                  radius: 60.0,
+                    lineWidth: 13.0,
+                    animation: true,
+                    percent: foxScore,
+                    center: Text(
+                      "${(foxScore* 100).toStringAsFixed(1)}%",
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+                    ),
+                      footer: const Text(
+                            "Mean of the Fox and Food Populations",
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+                          ),
+                            circularStrokeCap: CircularStrokeCap.round,
+                          progressColor: Colors.red,
+                          backgroundColor: Colors.green,
 
-            SliverToBoxAdapter(
+               ),
+            ],
+          ),
+        ),
+        ),),),
+ SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Container(

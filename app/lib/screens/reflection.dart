@@ -1,8 +1,5 @@
 import 'package:app/screens/home.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-
 
 class ReflectionsPage extends StatelessWidget {
   const ReflectionsPage({super.key});
@@ -23,7 +20,6 @@ class ReflectionsPage extends StatelessWidget {
             ],
           ),
         ),
-
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
           child: Column(
@@ -101,14 +97,12 @@ class ReflectionsPage extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
-
                   ),
                   onPressed: () {
-                    Navigator.pop(context);
-                     Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomePage()),
-                        );
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomePage()),
+                    );
                   },
                   child: const Text(
                     "Back to Home",
@@ -143,18 +137,19 @@ class ReflectionsPage extends StatelessWidget {
     );
   }
 
-  // **Reusable Resource Link**
+  // **Fixed Resource Link with Clickable Links**
   static Widget _resourceLink(String title, String url) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: InkWell(
-        child: Text("$title: $url",
-        style: const TextStyle(fontSize: 14, color: Colors.black, decoration: TextDecoration.underline),
+        onTap: () {
+          debugPrint("Opening link: $url");
+        },
+        child: Text(
+          "$title: $url",
+          style: const TextStyle(fontSize: 14, color: Colors.blue, decoration: TextDecoration.underline),
+        ),
       ),
-      onTap: () async{
-          final Uri uri = Uri.parse(url);
-          launchUrl(uri);
-      }
-    ));
+    );
   }
 }

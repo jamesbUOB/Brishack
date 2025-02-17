@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/**import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 void main() {
@@ -85,5 +85,36 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
+}**/
+
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'screens/home.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+
+void main() {
+  runApp(MyApp());
 }
 
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  @override
+  void initState() {
+    super.initState();
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: HomePage(),
+    );
+  }
+}

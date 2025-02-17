@@ -1,8 +1,9 @@
 import random
 import json
+import sys
 import arcade
 import requests
-import animals, humans
+import animals, humans, plants
 import time
 import arcade.draw
 from perlin import world_generation
@@ -12,11 +13,9 @@ WINDOW_HEIGHT = 800
 TILE_SIZE = 10
 WINDOW_TITLE = "Ecosystem Simulation"
 MOVEMENT_SPEED = 0.2
+FOX_HIT = False
 fox_numbers = []
 food_available = []
-waste_mode = False
-road_mode = False
-mist_mode = False
 
 
 class Mist(arcade.Sprite):
@@ -53,18 +52,25 @@ class Mist(arcade.Sprite):
         )
 
 
-def on_close():
-        data = {"fox_numbers": fox_numbers,
-                "food_numbers": food_available}
 
+class GameView(arcade.Window):
+    def on_close(self):
+        data = {
+            "fox_numbers": fox_numbers,
+            "food_numbers": food_available
+        }
 
+        # Send the POST request to Flask
         url = 'http://127.0.0.1:5000/end'
-        response = requests.post(url, json=data)
+        try:
+            response = requests.post(url, json=data)
+            print("Data sent to Flask, status code:", response.status_code)
+        except Exception as e:
+            print("Error sending data to Flask:", e)
+
         arcade.close_window()
         super().on_close()
 
-
-class GameView(arcade.Window):
     def __init__(self):
         super().__init__(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, 
                          resizable=True)
@@ -79,9 +85,11 @@ class GameView(arcade.Window):
         self.sprites = arcade.SpriteList()
         self.plants = arcade.SpriteList()
         self.urban = arcade.SpriteList()
+        self.cars = arcade.SpriteList()
         self.world_tiles = None
         self.road_coords = [-100, -100]
-
+        self.speed = 5
+        
         if road_mode:
             road_y = 0
             road_centre = random.uniform(100,700) 
@@ -91,6 +99,18 @@ class GameView(arcade.Window):
                 rd.center_x = road_centre
                 self.urban.append(rd)
                 road_y += 76
+
+            start_y = 0
+            start_x = road_centre + 22.5
+            car1 = humans.Car(start_x,start_y,WINDOW_WIDTH,WINDOW_HEIGHT,"resources/YellowBuggy.png", self.sprites,5)
+
+            start_y_2 = 1200
+            start_x_2 = road_centre - 22.5
+            car2 = humans.Car(start_x_2,start_y_2,WINDOW_WIDTH,WINDOW_HEIGHT,"resources/YellowBuggy.png", self.sprites,-5)
+            car2.angle = 180
+
+            self.cars.append(car1)
+            self.cars.append(car2)
 
             self.road_start_x = road_centre - rd.width/2 - 20
             self.road_start_y = road_centre + rd.width/2 + 20
@@ -103,7 +123,6 @@ class GameView(arcade.Window):
 
         for i in range(10):
             animals.plants.spawn_bush(self.plants, self.grid)
-
 
         # add waste to the map
         if waste_mode == True:
@@ -166,6 +185,7 @@ class GameView(arcade.Window):
         self.terrain_list.draw(pixelated = True)
         self.plants.draw()
         self.urban.draw()
+        self.cars.draw()
         self.sprites.draw()
         if mist_mode:
             self.mist.draw()
@@ -180,14 +200,37 @@ class GameView(arcade.Window):
                 
                 if isinstance(sprite, animals.Fox):
                     self.foxs.append(sprite)
-            
-        hit_list = arcade.check_for_collision_with_list(self.mist,self.foxs)
-        for f in hit_list:
-                f.health -= 1
-                f.health_bar.update_colors(new_full_colour=arcade.color.GREEN)
         
         if mist_mode:
+            hit_list = arcade.check_for_collision_with_list(self.mist,self.foxs)
+            for f in hit_list:
+                    f.health -= 1
+                    f.health_bar.update_colors(new_full_colour=arcade.color.GREEN)
+
+            plant_hit_list = arcade.check_for_collision_with_list(self.mist,self.plants)
+            for p in plant_hit_list:
+                if p.type == "berrybush":
+                    bush = plants.EmptyBush(self.plants, "resources/emptybush.png", 2)
+                    bush.center_x = p.center_x
+                    bush.center_y = p.center_y
+                    p.kill()
+                    self.plants.append(bush)
+
             self.mist.update()
+        
+        if road_mode:
+            for c in self.cars:
+                hit_list = arcade.check_for_collision_with_list(c, self.sprites)
+                for sprite in hit_list:
+                    if type(sprite) == arcade.SpriteSolidColor:
+                        pass
+                    elif sprite.type == "fox":
+                        sprite.kill_fox()
+                    elif sprite.type == "rat":
+                        self.sprites.remove(sprite)
+
+            self.cars[0].update()
+            self.cars[1].update()
 
         animals.plants.update_bushes(self.plants)
         animals.fox_death(self.sprites)
@@ -226,13 +269,28 @@ class GameView(arcade.Window):
         food_available.append(food_num)
 
         if time.time() - self.fullsimstart >= 60:
-            on_close()
+            self.on_close()
 
 
 def main(parameters):
+   global waste_mode, mist_mode, road_mode
+   waste_mode = parameters.get('waste', False)
+   mist_mode = parameters.get('mist', False)
+   road_mode = parameters.get('urban', False)
+
    window = GameView()
    window.setup()
    arcade.run()
+   sys.exit(0)
 
 if __name__ == "__main__":
-   main("default")
+    if len(sys.argv) > 1:
+        try:
+            parameters = json.loads(sys.argv[1])
+        except json.JSONDecodeError as e:
+            print("Failed to decode JSON:", e)
+            parameters = {}
+    else:
+        parameters = {}
+
+    main(parameters)

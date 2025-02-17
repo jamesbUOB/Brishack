@@ -1,15 +1,21 @@
+import json
 from flask import Flask, request, jsonify, Response
 from flask_socketio import SocketIO, emit
 import simulation
+from flask_cors import CORS
+import subprocess
 
 app = Flask(__name__)
+CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-@app.route('/end')
-def get_data():
-    # method for getting data from the frontend
+@app.after_request
+def add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+    return response
 
-    return "200"
 
 @app.route('/end', methods=['POST'])
 def send_data():
@@ -17,7 +23,7 @@ def send_data():
 
     socketio.emit('update', data)
     
-    return "200"
+    return jsonify({"message": "Success"})
 
 
 @app.before_request
@@ -39,12 +45,11 @@ def handle_message(start):
     socketio.emit('update', "window opened")
     # flutter passes in parameters for starting condition
 
+    parameters = json.dumps(start)
 
-    simulation.main(start)
-
-        
-        
+    subprocess.Popen(["python", "simulation.py", parameters])
+    
 
 
 if __name__ == '__main__':
-    socketio.run(app, host="127.0.0.1", port=5000, debug=True)
+    socketio.run(app, host="127.0.0.1", port=5000, debug=False, use_reloader=False)

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
   class ScoreIndicator extends StatelessWidget {
   final String title;
-  final totalScore;
-  final double percentageScore;
+  final double foxScore;
+  final double foodScore;
   final double radius;
   final double lineWidth;
   final Color progressColor;
@@ -12,8 +12,8 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
   const ScoreIndicator({
     super.key,
     required this.title,
-    required this.totalScore,
-    required this.percentageScore,
+    required this.foxScore,
+    required this.foodScore,
     required this.radius,
     required this.lineWidth,
     required this.progressColor,
@@ -34,9 +34,9 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
         CircularPercentIndicator(
           radius: radius,
           lineWidth: lineWidth,
-          percent: 1 - (percentageScore/100),
+          percent: 1 - (foodScore/100),
           center: Text(
-            "${percentageScore.toStringAsFixed(2)}%",
+            "${foodScore.toStringAsFixed(2)}%",
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           progressColor: progressColor,
@@ -44,7 +44,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
         ),
         SizedBox(height: 10),
         Text(
-          'Score: $totalScore',
+          'Score: $foxScore',
           style: TextStyle(fontSize: 16),
         ),
       ],

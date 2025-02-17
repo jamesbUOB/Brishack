@@ -15,7 +15,8 @@ class _CustomisePageState extends State<CustomisePage> {
   late IO.Socket socket;
   String connectionStatus = 'Disconnected';
   String message = '';
-  double totalScore = 0.0;
+  double foxScore = 0.0;
+  double foodScore = 0.0;
   @override
   void initState() {
     super.initState();
@@ -186,9 +187,9 @@ class _CustomisePageState extends State<CustomisePage> {
                   radius: 60.0,
                     lineWidth: 13.0,
                     animation: true,
-                    percent: totalScore,
+                    percent: foxScore,
                     center: Text(
-                      "${(totalScore* 100).toStringAsFixed(1)}%",
+                      "${(foxScore* 100).toStringAsFixed(1)}%",
                       style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
                     ),
                       footer: const Text(
@@ -196,7 +197,9 @@ class _CustomisePageState extends State<CustomisePage> {
                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
                           ),
                             circularStrokeCap: CircularStrokeCap.round,
-                          progressColor: Colors.green,
+                          progressColor: Colors.red,
+                          backgroundColor: Colors.green,
+
                ),
             ],
           ),

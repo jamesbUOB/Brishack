@@ -1,4 +1,7 @@
+import 'dart:convert';
+import 'package:app/screens/reflection.dart';
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class CustomisePage extends StatefulWidget {
@@ -13,6 +16,8 @@ class _CustomisePageState extends State<CustomisePage> {
   late IO.Socket socket;
   String connectionStatus = 'Disconnected';
   String message = '';
+  double foxScore = 0;
+  double foodScore = 0;
 
   @override
   void initState() {
@@ -31,14 +36,39 @@ class _CustomisePageState extends State<CustomisePage> {
       print('Connected: ${socket.id}');
     });
 
-    socket.on('update', (data) {
+    // socket.on('update', (data) {
+    //   setState(() {
+    //     message = data.toString();
+    //     // printing this will give you a long list of data once the simulation ends
+    //     // simulation length is set to 60 seconds
+    //     //print(message);
+      
+    //   });
+    //   print('Update event: $data');
+    // });
+        socket.on('update', (data) {
       setState(() {
-        message = data.toString();
-        // printing this will give you a long list of data once the simulation ends
-        // simulation length is set to 60 seconds
-        //print(message);
-      });
-      print('Update event: $data');
+        // data to string
+        String data_str = data.toString();        
+        // wrap keys in quotes
+        String validJson = data_str.replaceAllMapped(
+          RegExp(r'(\w+):'),
+          (Match m) => '"${m[1]}":'
+        );
+
+        Map<String, dynamic> decoded = jsonDecode(validJson);
+
+        // lists
+        List<int> foxNumbers = List<int>.from(decoded["fox_numbers"]);
+        List<int> foodNumbers = List<int>.from(decoded["food_numbers"]);
+
+        print("Fox Numbers: $foxNumbers");
+        print("Food Numbers: $foodNumbers");
+
+        var foxNum = foxNumbers.reduce((a, b) => a + b) / foxNumbers.length.toDouble();
+        var foodNum = foodNumbers.reduce((a, b) => a + b) / foodNumbers.length.toDouble();
+        foxScore = foxNum/(foxNum + foodNum);
+          });
     });
 
     socket.on('disconnect', (_) {
@@ -77,7 +107,7 @@ class _CustomisePageState extends State<CustomisePage> {
         ),
         child: CustomScrollView(
           slivers: [
-            // **Title & Introduction**
+ // **Title & Introduction**
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -101,6 +131,7 @@ class _CustomisePageState extends State<CustomisePage> {
                 ),
               ),
             ),
+
 
             SliverToBoxAdapter(
               child: Padding(
@@ -128,7 +159,7 @@ class _CustomisePageState extends State<CustomisePage> {
                           ),
                           SizedBox(height: 5),
                           Text(
-                            "Increase or decrease waste levels. More waste may attract scavengers, while cleaner streets could improve urban habitats.",
+                            "Increase or decrease waste levels.",
                             style:
                                 TextStyle(fontSize: 14, color: Colors.black87),
                           ),
@@ -174,7 +205,7 @@ class _CustomisePageState extends State<CustomisePage> {
                           ),
                           SizedBox(height: 5),
                           Text(
-                            "Increase or decrease pollution levels. Cleaner air helps wildlife thrive, while higher pollution may challenge survival.",
+                            "Increase or decrease pollution levels.",
                             style:
                                 TextStyle(fontSize: 14, color: Colors.black87),
                           ),
@@ -221,7 +252,7 @@ class _CustomisePageState extends State<CustomisePage> {
                           ),
                           SizedBox(height: 5),
                           Text(
-                            "More buildings, more roads, more people… but how does this affect Bristol’s wildlife?",
+                            "Increase buildings and roads.",
                             style:
                                 TextStyle(fontSize: 14, color: Colors.black87),
                           ),
@@ -245,7 +276,7 @@ class _CustomisePageState extends State<CustomisePage> {
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Container(
-                  height: 200,
+                  height: 150,
                   padding: const EdgeInsets.all(20),
                   child: Center(
                     child: Column(
@@ -254,7 +285,7 @@ class _CustomisePageState extends State<CustomisePage> {
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 40, vertical: 15),
+                                horizontal: 50, vertical: 30),
                             backgroundColor:
                                 const Color.fromARGB(255, 15, 114, 18),
                             shape: RoundedRectangleBorder(
@@ -278,6 +309,47 @@ class _CustomisePageState extends State<CustomisePage> {
                         ),
                       ],
                     ),
+                  ),
+                ),
+              ),
+            ),
+           SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Container(
+                  height: 500,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(color: Colors.black26, blurRadius: 4)
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularPercentIndicator(
+                        radius: 150.0,
+                        lineWidth: 30.0,
+                        animation: true,
+                        percent: foxScore,
+                        center: Text(
+                          "${(foxScore * 100).toStringAsFixed(1)}% Foxes",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20.0),
+                        ),
+                        footer: const Text(
+                          "Mean of Fox Population Over Food Population",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 17.0),
+                        ),
+                        circularStrokeCap: CircularStrokeCap.round,
+                        progressColor: Colors.red,
+                        backgroundColor: Colors.green,
+                            ),
+                            //  const SizedBox(height: 100),
+                    ],
                   ),
                 ),
               ),
@@ -306,7 +378,7 @@ class _CustomisePageState extends State<CustomisePage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const CustomisePage()),
+                              builder: (context) => ReflectionPage()),
                         );
                       },
                       style: ButtonStyle(

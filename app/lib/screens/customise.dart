@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'circular_percentage_indicator.dart';
 class CustomisePage extends StatefulWidget {
   const CustomisePage({super.key});
+  
 
   @override
   State<CustomisePage> createState() => _CustomisePageState();
@@ -12,7 +15,7 @@ class _CustomisePageState extends State<CustomisePage> {
   late IO.Socket socket;
   String connectionStatus = 'Disconnected';
   String message = '';
-
+  double totalScore = 0.0;
   @override
   void initState() {
     super.initState();
@@ -150,7 +153,7 @@ class _CustomisePageState extends State<CustomisePage> {
     child: Padding(
       padding: const EdgeInsets.all(20.0),
       child: Container(
-        height: 200,
+        height: 500,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
@@ -161,8 +164,8 @@ class _CustomisePageState extends State<CustomisePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                child: Text(
-                  "Customise your ecosystem simulation",
+                child: const
+                  Text( "Customise your ecosystem simulation",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                   textAlign: TextAlign.center,
                 )
@@ -178,6 +181,23 @@ class _CustomisePageState extends State<CustomisePage> {
                 },
                 child: Text('Start simulation'),
               ),
+               const SizedBox(height: 20),
+               CircularPercentIndicator(
+                  radius: 60.0,
+                    lineWidth: 13.0,
+                    animation: true,
+                    percent: totalScore,
+                    center: Text(
+                      "${(totalScore* 100).toStringAsFixed(1)}%",
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+                    ),
+                      footer: const Text(
+                            "Mean of the Fox and Food Populations",
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+                          ),
+                            circularStrokeCap: CircularStrokeCap.round,
+                          progressColor: Colors.green,
+               ),
             ],
           ),
         ),

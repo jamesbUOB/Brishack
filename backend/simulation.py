@@ -73,7 +73,7 @@ class GameView(arcade.Window):
 
     def __init__(self):
         super().__init__(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, 
-                         resizable=True)
+                         resizable=False)
         
         self.ax = int(WINDOW_WIDTH / TILE_SIZE)
         self.ay = int(WINDOW_HEIGHT/ TILE_SIZE)

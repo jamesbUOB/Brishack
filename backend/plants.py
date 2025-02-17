@@ -8,15 +8,12 @@ class Plant(arcade.Sprite):
        super().__init__(image_file, scale)
 
 
-
 class EmptyBush(Plant):
    def __init__(self, sprites, image_file, scale):
        super().__init__(sprites, image_file, scale)
 
        self.start = time.time()
        self.type = "emptybush"
-
-
 
 
 class BerryBush(Plant):
@@ -27,13 +24,11 @@ class BerryBush(Plant):
        self.type = "berrybush"
   
 
-
 def update_bushes(plants):
    for i in range(len(plants)):
        if type(plants[i]) == EmptyBush:
            currentTime = time.time()
            elapsed = currentTime - plants[i].start
-
 
            if elapsed > 10:
                bush = BerryBush(plants, "resources/berrybush.png", 2)

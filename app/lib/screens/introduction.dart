@@ -265,5 +265,3 @@ Widget _buildFactCard(
     ),
   );
 }
-
-}

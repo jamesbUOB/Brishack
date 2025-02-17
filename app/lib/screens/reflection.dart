@@ -23,6 +23,7 @@ class ReflectionsPage extends StatelessWidget {
             ],
           ),
         ),
+
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
           child: Column(

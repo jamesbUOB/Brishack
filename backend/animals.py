@@ -141,13 +141,10 @@ class Fox(Animal):
         if random.random() < 0.0006:
             self.set_reproduce_true()
         
-
-        
     def kill_fox(self):
         self.hunger_bar.remove()
         self.health_bar.remove()
         self.kill()
-
 
 def follow_sprite(self, sprite):
     speed = MOVEMENT_SPEED
@@ -246,7 +243,7 @@ class Rat(Animal):
     
     def update(self):
         # Move the sprite
-        road_collisions(self)
+        #road_collisions(self)
         self.center_x += self.change_x
         self.center_y += self.change_y
 
